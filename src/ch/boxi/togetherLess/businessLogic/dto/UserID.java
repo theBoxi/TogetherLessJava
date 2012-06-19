@@ -35,6 +35,9 @@ public class UserID implements ID{
 		return innerID.getLongValue();
 	}
 	
-	
+	@Override
+	public String toString(){
+		return innerID.toString();
+	}
 
 }
