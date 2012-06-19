@@ -6,7 +6,13 @@ import org.junit.Test;
 public class UserIdTest {
 	@Test
 	public void testToString(){
-		UserID userID = new UserID(1l);
-		Assert.assertEquals("UID-000.000.001", userID.toString());
+		UserID userID = UserID.createFromNewValueWithoutCheckdigit(1l);
+		Assert.assertEquals("UID-000.000.001-95", userID.toString());
+	}
+	
+	@Test
+	public void testIsValid(){
+		UserID userID = UserID.createFromNewValueWithoutCheckdigit(1l);
+		Assert.assertTrue(userID.isValid());
 	}
 }

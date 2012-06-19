@@ -17,7 +17,7 @@ public class User{
 	public User(Long id, String firstName, String lastName, String email,
 			int targetWeight, Date targetDate) {
 		this();
-		this.id = new UserID(id);
+		this.id = UserID.createFromDbRepresentiv(id);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
