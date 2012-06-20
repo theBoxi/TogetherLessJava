@@ -17,7 +17,7 @@ public class UserID implements ID{
 	private static final long serialVersionUID = 4772807214227419835L;
 	private static final String ID_FORMAT = "{prefix|-}0##.###.###-##";
 	private static final CheckDigitAlgorythm algorythm = new Mod9710Algorythm();
-	private ID innerID = null;
+	private IDBaseDecorator innerID = null;
 	
 	public UserID(){
 		super();
@@ -66,7 +66,7 @@ public class UserID implements ID{
 	}
 	
 	public boolean isValid(){
-		CheckDigitDecorator decorator = getIDBaseDecorator(innerID, DecoratorType.CeckDigit);
+		CheckDigitDecorator decorator = innerID.getIDBaseDecorator(innerID, DecoratorType.CeckDigit);
 		if(decorator != null){
 			return decorator.getCheckDigitAlgorythm().isValidID(getLongValue());
 		}
@@ -74,23 +74,9 @@ public class UserID implements ID{
 	}
 	
 	public String getPrefix(){
-		PrefixDecorator decorator = getIDBaseDecorator(innerID, DecoratorType.Prefix);
+		PrefixDecorator decorator = innerID.getIDBaseDecorator(innerID, DecoratorType.Prefix);
 		if(decorator != null){
 			return decorator.getPrefix();
-		}
-		return null;
-	}
-	
-	private <T extends IDBaseDecorator> T getIDBaseDecorator(ID id, DecoratorType type){
-		if(id instanceof IDBaseDecorator){
-			IDBaseDecorator decorator = (IDBaseDecorator) id;
-			if(type == decorator.getDecoratorType()){
-				@SuppressWarnings("unchecked")
-				T returnValue = (T)decorator;
-				return returnValue;
-			} else{
-				return getIDBaseDecorator(decorator.getBase(), type);
-			}
 		}
 		return null;
 	}
