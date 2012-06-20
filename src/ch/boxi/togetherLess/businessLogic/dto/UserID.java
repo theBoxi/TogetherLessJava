@@ -11,6 +11,7 @@ import ch.boxi.javaUtil.id.decorator.format.FormatterDecorator;
 import ch.boxi.javaUtil.id.decorator.format.IDFormat;
 import ch.boxi.javaUtil.id.decorator.format.SimpleIDFormat;
 import ch.boxi.javaUtil.id.decorator.prefix.PrefixDecorator;
+import ch.boxi.javaUtil.id.decorator.validation.ValidationException;
 
 public class UserID implements ID{
 	private static final long serialVersionUID = 4772807214227419835L;
@@ -33,8 +34,16 @@ public class UserID implements ID{
 					, Idformat);
 	}
 	
+	public static UserID createFromDbRepresentiv(long dbRepresentiv, boolean mustBeValid) throws ValidationException{
+		UserID id = new UserID(dbRepresentiv);
+		if(mustBeValid && !id.isValid()){
+			throw new ValidationException("id " + id + " is not valid!");
+		}
+		return id;
+	}
+	
 	public static UserID createFromDbRepresentiv(long dbRepresentiv){
-		return new UserID(dbRepresentiv);
+		return createFromDbRepresentiv(dbRepresentiv, true);
 	}
 	
 	public static UserID createFromNewValueWithoutCheckdigit(long value){
@@ -43,7 +52,7 @@ public class UserID implements ID{
 	
 	@Override
 	public int compareTo(ID o) {
-		return ((Long)innerID.getLongValue()).compareTo(o.getLongValue());
+		return toString().compareTo(o.toString());
 	}
 
 	@Override
@@ -57,20 +66,33 @@ public class UserID implements ID{
 	}
 	
 	public boolean isValid(){
-		return isValid(innerID);
-	}
-	
-	private boolean isValid(ID id){
-		if(id instanceof IDBaseDecorator){
-			IDBaseDecorator decorator = (IDBaseDecorator) id;
-			if(DecoratorType.CeckDigit == decorator.getDecoratorType()){
-				CheckDigitDecorator checkDigitDecorator = (CheckDigitDecorator) decorator;
-				return checkDigitDecorator.getCheckDigitAlgorythm().isValidID(getLongValue());
-			} else{
-				return isValid(decorator.getBase());
-			}
+		CheckDigitDecorator decorator = getIDBaseDecorator(innerID, DecoratorType.CeckDigit);
+		if(decorator != null){
+			return decorator.getCheckDigitAlgorythm().isValidID(getLongValue());
 		}
 		return false;
+	}
+	
+	public String getPrefix(){
+		PrefixDecorator decorator = getIDBaseDecorator(innerID, DecoratorType.Prefix);
+		if(decorator != null){
+			return decorator.getPrefix();
+		}
+		return null;
+	}
+	
+	private <T extends IDBaseDecorator> T getIDBaseDecorator(ID id, DecoratorType type){
+		if(id instanceof IDBaseDecorator){
+			IDBaseDecorator decorator = (IDBaseDecorator) id;
+			if(type == decorator.getDecoratorType()){
+				@SuppressWarnings("unchecked")
+				T returnValue = (T)decorator;
+				return returnValue;
+			} else{
+				return getIDBaseDecorator(decorator.getBase(), type);
+			}
+		}
+		return null;
 	}
 
 }
