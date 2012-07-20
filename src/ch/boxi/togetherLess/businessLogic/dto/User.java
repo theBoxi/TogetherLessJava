@@ -3,7 +3,6 @@ package ch.boxi.togetherLess.businessLogic.dto;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
 public class User{
@@ -13,7 +12,6 @@ public class User{
 	private String email;
 	private int targetWeight;
 	private Date targetDate;
-	@XmlTransient
 	private Login login;
 	
 	public User(){
@@ -73,6 +71,10 @@ public class User{
 
 	public SimpleUserID getId() {
 		return id;
+	}
+	
+	public void setId(SimpleUserID id){
+		this.id = id;
 	}
 
 	public Login getLogin() {
