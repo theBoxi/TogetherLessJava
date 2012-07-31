@@ -17,15 +17,15 @@
 		</script>
 		<form name="registerForm">
 			<h1>Register</h1>
-			<input type="text" placeholder="* Vorname"/><br/>
-			<input type="text" placeholder="* Nachname"/><br/>
-			<input type="text" placeholder="* UserName"/><br/>
-			<input type="password" placeholder="* Passwort"/><br/>
-			<input type="password" placeholder="* Passwort-wiederholung"/><br/>
-			<input type="email" placeholder="* your@email"/><br/>
-			<input type="text" placeholder="* 80 [kg]" pattern="[0-9]*" alt="[0-9]*"/><br/>
-			<input type="date" placeholder="Ziel: 2012.12.31"/><br/>
-			<input type="button" value="registrieren" onclick="makeCall()"/>
+			<input name="firstName"		type="text" 	placeholder="* Vorname"/><br/>
+			<input name="lastName" 		type="text" 	placeholder="* Nachname"/><br/>
+			<input name="userName" 		type="text" 	placeholder="* UserName"/><br/>
+			<input name="password" 		type="password" placeholder="* Passwort"/><br/>
+			<input name="password2" 	type="password" placeholder="* Passwort-wiederholung"/><br/>
+			<input name="email" 		type="email" 	placeholder="* your@email"/><br/>
+			<input name="targetWeight" 	type="text" 	placeholder="* 80 [kg]" pattern="[0-9]*" alt="[0-9]*"/><br/>
+			<input name="targetDate" 	type="date" 	placeholder="Ziel: 2012.12.31"/><br/>
+			<input 						type="button" 	value="registrieren" onclick="makeCall()"/>
 		</form>
 	</body>
 </html>
