@@ -1,15 +1,8 @@
 package ch.boxi.togetherLess.businessLogic.dto;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
-
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Login {
 	private String username;
 	private String password;
-	
-	@XmlTransient
 	private User user;
 	
 	public Login(){

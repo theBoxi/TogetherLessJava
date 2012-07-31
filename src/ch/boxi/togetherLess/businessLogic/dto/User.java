@@ -2,16 +2,23 @@ package ch.boxi.togetherLess.businessLogic.dto;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import ch.boxi.togetherLess.businessLogic.dto.XmlAdapter.DateAdapter;
 
 @XmlRootElement
 public class User{
+	@XmlElement(name="id")
 	private SimpleUserID id;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private int targetWeight;
 	private Date targetDate;
+	@XmlTransient
 	private Login login;
 	
 	public User(){
@@ -71,10 +78,6 @@ public class User{
 
 	public SimpleUserID getId() {
 		return id;
-	}
-	
-	public void setId(SimpleUserID id){
-		this.id = id;
 	}
 
 	public Login getLogin() {

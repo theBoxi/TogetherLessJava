@@ -1,10 +1,9 @@
 package ch.boxi.togetherLess.businessLogic.dto;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlValue;
 
-@XmlAccessorType(XmlAccessType.FIELD)
 public class SimpleUserID implements Comparable<SimpleUserID> {
+	@XmlValue
 	private Long id;
 	
 	private SimpleUserID(){
