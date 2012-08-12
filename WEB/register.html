@@ -10,14 +10,13 @@
 				$.ajax({
 				    url: 'http://localhost:8080/rest/user/register',
 				    type: 'put',
-				    accepts: 'test/xml',
 				    data: $('#registerForm').serializeArray(), // or 'ID=1&Name=John&Age=10'
 				    success: function(data) { 
 				    	alert('PUT completed\nStatusText:\t ' + data.statusText + '\nresponse:\t ' + data.responseText);
 				    },
 				    error: function(data) { 
 				    	alert('PUT failed\nStatusText:\t ' + data.statusText + '\nresponse:\t ' + data.responseText); 
-				    a}
+				    }
 				});
 			}
 		</script>

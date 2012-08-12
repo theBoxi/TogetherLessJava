@@ -3,6 +3,7 @@ package ch.boxi.togetherLess.backend;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -18,6 +19,7 @@ import ch.boxi.togetherLess.dataAccess.UserDAO;
 
 @Path("/user")
 public class UserFacade {
+	private static final Logger logger = Logger.getLogger(UserFacade.class.getName());
 	
 	@PUT
 	@Path("register")
@@ -30,7 +32,8 @@ public class UserFacade {
 			@QueryParam("email") 		String email, 
 			@QueryParam("targetWeight") int targetWeight, 
 			@QueryParam("targetDate")	String targetDate) throws ParseException{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+		logger.info("called register");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 		Date date = sdf.parse(targetDate);
 		UserDAO userDAO = new UserDAO();
 		User user = userDAO.register(userName, password, firstName, lastName, email, targetWeight, date);
@@ -41,6 +44,7 @@ public class UserFacade {
 	@Path("{id}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public User getUser(@PathParam("id") String id){
+		logger.info("called getUser");
 		UserDAO userDAO = new UserDAO();
 		SimpleUserID userID = new SimpleUserID(id);
 		User user = userDAO.getUser(userID);
