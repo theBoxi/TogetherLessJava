@@ -11,11 +11,12 @@
 				    url: 'http://localhost:8080/rest/user/register',
 				    type: 'get',
 				    data: $('#registerForm').serializeArray(), // or 'ID=1&Name=John&Age=10'
-				    success: function() { alert('PUT completed'); }
+				    success: function() { alert('PUT completed'); },
+				    error: function() { alert('PUT failed'); }
 				});
 			}
 		</script>
-		<form name="registerForm">
+		<form id="registerForm">
 			<h1>Register</h1>
 			<input name="firstName"		type="text" 	placeholder="* Vorname"/><br/>
 			<input name="lastName" 		type="text" 	placeholder="* Nachname"/><br/>
