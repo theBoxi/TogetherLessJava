@@ -21,7 +21,7 @@ import ch.boxi.togetherLess.dataAccess.UserDAO;
 public class UserFacade {
 	private static final Logger logger = Logger.getLogger(UserFacade.class.getName());
 	
-	@PUT
+	@GET
 	@Path("register")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public User register(
