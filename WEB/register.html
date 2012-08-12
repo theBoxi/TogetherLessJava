@@ -9,7 +9,7 @@
 			function makeCall(){
 				$.ajax({
 				    url: 'http://localhost:8080/rest/user/register',
-				    type: 'get',
+				    type: 'put',
 				    data: $('#registerForm').serializeArray(), // or 'ID=1&Name=John&Age=10'
 				    success: function() { alert('PUT completed'); },
 				    error: function() { alert('PUT failed'); }
