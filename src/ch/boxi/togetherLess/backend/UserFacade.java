@@ -19,8 +19,6 @@ import ch.boxi.togetherLess.dataAccess.UserDAO;
 
 @Path("/user")
 public class UserFacade {
-	private static final Logger logger = Logger.getLogger(UserFacade.class.getName());
-	
 	@GET
 	@Path("register")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -32,8 +30,7 @@ public class UserFacade {
 			@QueryParam("email") 		String email, 
 			@QueryParam("targetWeight") int targetWeight, 
 			@QueryParam("targetDate")	String targetDate) throws ParseException{
-		logger.info("called register");
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = sdf.parse(targetDate);
 		UserDAO userDAO = new UserDAO();
 		User user = userDAO.register(userName, password, firstName, lastName, email, targetWeight, date);
@@ -44,7 +41,6 @@ public class UserFacade {
 	@Path("{id}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public User getUser(@PathParam("id") String id){
-		logger.info("called getUser");
 		UserDAO userDAO = new UserDAO();
 		SimpleUserID userID = new SimpleUserID(id);
 		User user = userDAO.getUser(userID);
