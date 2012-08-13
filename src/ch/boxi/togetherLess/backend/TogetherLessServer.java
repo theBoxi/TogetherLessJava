@@ -20,6 +20,11 @@ public class TogetherLessServer {
         
         ServletHolder servletHolder = new ServletHolder(new ServletContainer());
         servletHolder.setInitParameter("com.sun.jersey.config.property.packages", "ch.boxi.togetherLess.backend");
+        
+        //Add logging for request response!
+        servletHolder.setInitParameter("com.sun.jersey.spi.container.ContainerRequestFilters", "com.sun.jersey.api.container.filter.LoggingFilter");
+        servletHolder.setInitParameter("com.sun.jersey.spi.container.ContainerResponseFilters", "com.sun.jersey.api.container.filter.LoggingFilter");
+       
 		context.addServlet(servletHolder, "/rest/*");
  
         server.start();
