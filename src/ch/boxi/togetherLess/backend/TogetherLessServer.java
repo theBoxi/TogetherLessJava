@@ -18,6 +18,11 @@ public class TogetherLessServer {
         context.addServlet(new ServletHolder(new TestServlet("Buongiorno Mondo")),"/it/*");
         context.addServlet(new ServletHolder(new TestServlet("Bonjour le Monde")),"/fr/*");
         
+        ServletHolder fileServletHolder = new ServletHolder();
+        fileServletHolder.setInitParameter("basePath", "/WEB");
+        fileServletHolder.setServlet(new FileServlet());
+        context.addServlet(fileServletHolder, "/resource/*");
+        
         ServletHolder servletHolder = new ServletHolder(new ServletContainer());
         servletHolder.setInitParameter("com.sun.jersey.config.property.packages", "ch.boxi.togetherLess.backend");
         
