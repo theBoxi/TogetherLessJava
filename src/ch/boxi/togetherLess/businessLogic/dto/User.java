@@ -1,13 +1,12 @@
 package ch.boxi.togetherLess.businessLogic.dto;
 
 import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import ch.boxi.togetherLess.businessLogic.dto.XmlAdapter.DateAdapter;
 
 @XmlRootElement
 public class User{
@@ -19,7 +18,7 @@ public class User{
 	private int targetWeight;
 	private Date targetDate;
 	@XmlTransient
-	private Login login;
+	private Set<Login> logins = new TreeSet<>();
 	
 	public User(){
 		super();
@@ -80,12 +79,15 @@ public class User{
 		return id;
 	}
 
-	public Login getLogin() {
-		return login;
+	public Set<Login> getLogins() {
+		return logins;
 	}
 
-	public void setLogin(Login login) {
-		this.login = login;
+	public void setLogins(Set<Login> logins) {
+		this.logins = logins;
+		if(logins == null){
+			logins = new TreeSet<>();
+		}
 	}
 
 	@Override
@@ -98,7 +100,7 @@ public class User{
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + ((login == null) ? 0 : login.hashCode());
+		result = prime * result + ((logins == null) ? 0 : logins.hashCode());
 		result = prime * result
 				+ ((targetDate == null) ? 0 : targetDate.hashCode());
 		result = prime * result + targetWeight;
@@ -134,10 +136,10 @@ public class User{
 				return false;
 		} else if (!lastName.equals(other.lastName))
 			return false;
-		if (login == null) {
-			if (other.login != null)
+		if (logins == null) {
+			if (other.logins != null)
 				return false;
-		} else if (!login.equals(other.login))
+		} else if (!logins.equals(other.logins))
 			return false;
 		if (targetDate == null) {
 			if (other.targetDate != null)
@@ -148,5 +150,4 @@ public class User{
 			return false;
 		return true;
 	}
-	
 }

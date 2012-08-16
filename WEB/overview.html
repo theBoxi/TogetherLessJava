@@ -1,0 +1,29 @@
+<html>
+	<head>
+		<title>TogetherLess - Login</title>
+	</head>
+	
+	<body onload="makeCall()">
+		<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+		<script type="text/javascript">
+			function makeCall(){
+				$.ajax({
+				    url: 'http://localhost:8080/rest/user/1000',
+				    type: 'get',
+				    data: $('#registerForm').serializeArray(), // or 'ID=1&Name=John&Age=10'
+				    success: function(user) {
+				    	$('#registerForm').text("user: " + user.firstName + " " + user.lastName);
+				    	alert('PUT completed\nStatusText:\t ' + data.statusText + '\nresponse:\t ' + data.responseText);
+				    },
+				    error: function(data) { 
+				    	alert('PUT failed\nStatusText:\t ' + data.statusText + '\nresponse:\t ' + data.responseText); 
+				    }
+				});
+			}
+		</script>
+		<form id="registerForm">
+			<h1>Login</h1>
+			<div id="userinfo" />
+		</form>
+	</body>
+</html>

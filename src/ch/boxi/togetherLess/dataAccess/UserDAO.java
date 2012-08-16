@@ -5,13 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import ch.boxi.togetherLess.businessLogic.dto.Login;
+import ch.boxi.togetherLess.businessLogic.dto.CookieLogin;
+import ch.boxi.togetherLess.businessLogic.dto.UserLogin;
 import ch.boxi.togetherLess.businessLogic.dto.SimpleUserID;
 import ch.boxi.togetherLess.businessLogic.dto.User;
 
 public class UserDAO {
 	private static Map<SimpleUserID, User> users = new HashMap<SimpleUserID, User>();
-	private static Map<String, Login> logins = new TreeMap<String, Login>();
+	private static Map<String, UserLogin> logins = new TreeMap<String, UserLogin>();
 	private static long idCounter = 1000;
 	
 	static{
@@ -23,9 +24,9 @@ public class UserDAO {
 	}
 	
 	public User register(String userName, String password, String firstName, String lastName, String email, int targetWeight, Date targetDate){
-		Login login;
+		UserLogin login;
 		if(logins.get(userName) == null){
-			login = new Login(userName, password, null);
+			login = new UserLogin(userName, password, null);
 			logins.put(userName, login);
 		}else{
 			throw new UserAllreadyExistsException();
@@ -38,7 +39,7 @@ public class UserDAO {
 	}
 	
 	public User login(String userName, String password){
-		Login login = logins.get(userName);
+		UserLogin login = logins.get(userName);
 		if(login != null && login.getPassword().equals(password)){
 			return login.getUser();
 		}
@@ -53,5 +54,9 @@ public class UserDAO {
 		users.clear();
 		logins.clear();
 		idCounter = 1000;
+	}
+
+	public void addCookieLogin(User user, CookieLogin cookieLogin) {
+		user.getLogins().add(cookieLogin);
 	}
 }

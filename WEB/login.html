@@ -1,0 +1,33 @@
+<html>
+	<head>
+		<title>TogetherLess - Login</title>
+	</head>
+	
+	<body>
+		<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="cookie.js"></script>
+		
+		<script type="text/javascript">
+			function makeCall(){
+				$.ajax({
+				    url: 'http://localhost:8080/rest/user/login',
+				    type: 'get',
+				    data: $('#registerForm').serializeArray(), // or 'ID=1&Name=John&Age=10'
+				    success: function(data) { 
+				    	setCookie('sessionID', data.sessionID, 1);
+				    	document.location="overview.html";
+				    },
+				    error: function(data) { 
+				    	alert('PUT failed\nStatusText:\t ' + data.statusText + '\nresponse:\t ' + data.responseText); 
+				    }
+				});
+			}
+		</script>
+		<form id="registerForm">
+			<h1>Login</h1>
+			<input name="userName"	type="text"		placeholder="Username"/><br/>
+			<input name="password" 	type="password" placeholder="Password"/><br/>
+			<input 					type="button" 	value="login" onclick="makeCall()"/>
+		</form>
+	</body>
+</html>
