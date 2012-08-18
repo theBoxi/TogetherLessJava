@@ -1,4 +1,4 @@
-package ch.boxi.togetherLess.dataAccess;
+package ch.boxi.togetherLess.dataAccess.user.dao;
 
 public class UserAllreadyExistsException extends RuntimeException {
 	private static final long serialVersionUID = -5995503971969892180L;

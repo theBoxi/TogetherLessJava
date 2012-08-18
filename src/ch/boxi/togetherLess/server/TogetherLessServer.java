@@ -1,4 +1,4 @@
-package ch.boxi.togetherLess.backend;
+package ch.boxi.togetherLess.server;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -13,10 +13,6 @@ public class TogetherLessServer {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         server.setHandler(context);
- 
-        context.addServlet(new ServletHolder(new TestServlet()),"/*");
-        context.addServlet(new ServletHolder(new TestServlet("Buongiorno Mondo")),"/it/*");
-        context.addServlet(new ServletHolder(new TestServlet("Bonjour le Monde")),"/fr/*");
         
         ServletHolder fileServletHolder = new ServletHolder();
         fileServletHolder.setInitParameter("basePath", "/WEB");
@@ -24,7 +20,7 @@ public class TogetherLessServer {
         context.addServlet(fileServletHolder, "/resource/*");
         
         ServletHolder servletHolder = new ServletHolder(new ServletContainer());
-        servletHolder.setInitParameter("com.sun.jersey.config.property.packages", "ch.boxi.togetherLess.backend");
+        servletHolder.setInitParameter("com.sun.jersey.config.property.packages", "ch.boxi.togetherLess.facade");
         
         //Add logging for request response!
         servletHolder.setInitParameter("com.sun.jersey.spi.container.ContainerRequestFilters", "com.sun.jersey.api.container.filter.LoggingFilter");

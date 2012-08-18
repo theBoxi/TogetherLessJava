@@ -1,4 +1,4 @@
-package ch.boxi.togetherLess.businessLogic.dto;
+package ch.boxi.togetherLess.dataAccess.user.dto;
 
 public class UserLogin extends Login{
 	private String username;

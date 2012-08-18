@@ -6,7 +6,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.boxi.togetherLess.businessLogic.dto.User;
+import ch.boxi.togetherLess.dataAccess.user.dao.UserDAO;
+import ch.boxi.togetherLess.dataAccess.user.dto.User;
 
 public class UserDAOTest {
 	private UserDAO dao = new UserDAO();

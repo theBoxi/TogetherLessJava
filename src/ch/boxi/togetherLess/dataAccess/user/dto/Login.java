@@ -1,4 +1,4 @@
-package ch.boxi.togetherLess.businessLogic.dto;
+package ch.boxi.togetherLess.dataAccess.user.dto;
 
 public abstract class Login implements Comparable<Login>{
 

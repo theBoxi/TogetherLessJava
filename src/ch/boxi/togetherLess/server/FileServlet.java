@@ -1,4 +1,4 @@
-package ch.boxi.togetherLess.backend;
+package ch.boxi.togetherLess.server;
 /*
  * net/balusc/webapp/FileServlet.java
  *
@@ -63,7 +63,7 @@ public class FileServlet extends HttpServlet {
 
         // Get base path (path to get all resources from) as init parameter.
 //        this.basePath = getServletContext().getRealPath(getInitParameter("basePath"));
-    	this.basePath = "D:/GitHome/git/TogetherLess/WEB";
+    	this.basePath = "WEB";
 
         // Validate base path.
         if (this.basePath == null) {

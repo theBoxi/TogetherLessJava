@@ -1,14 +1,14 @@
-package ch.boxi.togetherLess.dataAccess;
+package ch.boxi.togetherLess.dataAccess.user.dao;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import ch.boxi.togetherLess.businessLogic.dto.CookieLogin;
-import ch.boxi.togetherLess.businessLogic.dto.UserLogin;
-import ch.boxi.togetherLess.businessLogic.dto.SimpleUserID;
-import ch.boxi.togetherLess.businessLogic.dto.User;
+import ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin;
+import ch.boxi.togetherLess.dataAccess.user.dto.SimpleUserID;
+import ch.boxi.togetherLess.dataAccess.user.dto.User;
+import ch.boxi.togetherLess.dataAccess.user.dto.UserLogin;
 
 public class UserDAO {
 	private static Map<SimpleUserID, User> users = new HashMap<SimpleUserID, User>();

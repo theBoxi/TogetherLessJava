@@ -1,4 +1,4 @@
-package ch.boxi.togetherLess.backend;
+package ch.boxi.togetherLess.facade;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,11 +13,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import ch.boxi.togetherLess.businessLogic.dto.CookieLogin;
-import ch.boxi.togetherLess.businessLogic.dto.SimpleUserID;
-import ch.boxi.togetherLess.businessLogic.dto.User;
-import ch.boxi.togetherLess.businessLogic.dto.SessionIDHolder;
-import ch.boxi.togetherLess.dataAccess.UserDAO;
+import ch.boxi.togetherLess.dataAccess.user.dao.UserDAO;
+import ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin;
+import ch.boxi.togetherLess.dataAccess.user.dto.SessionIDHolder;
+import ch.boxi.togetherLess.dataAccess.user.dto.SimpleUserID;
+import ch.boxi.togetherLess.dataAccess.user.dto.User;
 
 @Path("/user")
 public class UserFacade {
