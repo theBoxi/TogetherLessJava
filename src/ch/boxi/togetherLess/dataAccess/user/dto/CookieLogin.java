@@ -1,7 +1,13 @@
 package ch.boxi.togetherLess.dataAccess.user.dto;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="cookielogin")
 public class CookieLogin extends Login{
-	private String sessionString;
+	@Column private String sessionString;
 	
 	public CookieLogin(){
 		super();

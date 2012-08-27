@@ -4,30 +4,41 @@ import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-@XmlRootElement
+@Entity
+@Table(name="user")
 public class User{
-	@XmlElement(name="id")
-	private SimpleUserID id;
-	private String firstName;
-	private String lastName;
-	private String email;
-	private int targetWeight;
-	private Date targetDate;
-	@XmlTransient
+	@Id
+	@GeneratedValue
+	private Integer id;
+	@Column private String firstName;
+	@Column private String lastName;
+	@Column private String email;
+	@Column private int targetWeight;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column private Date targetDate;
+	
+	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private Set<Login> logins = new TreeSet<>();
 	
 	public User(){
 		super();
 	}
 
-	public User(Long id, String firstName, String lastName, String email,
+	public User(Integer id, String firstName, String lastName, String email,
 			int targetWeight, Date targetDate, Login login) {
 		this();
-		this.id = new SimpleUserID(id);
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -75,7 +86,7 @@ public class User{
 		this.targetDate = targetDate;
 	}
 
-	public SimpleUserID getId() {
+	public Integer getId() {
 		return id;
 	}
 

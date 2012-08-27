@@ -1,9 +1,6 @@
 package ch.boxi.togetherLess.dataAccess.user.dto;
 
-import javax.xml.bind.annotation.XmlValue;
-
 public class SimpleUserID implements Comparable<SimpleUserID> {
-	@XmlValue
 	private Long id;
 	
 	private SimpleUserID(){

@@ -12,7 +12,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import ch.boxi.togetherLess.dataAccess.DaoLocator;
 import ch.boxi.togetherLess.dataAccess.user.dao.UserDAO;
+import ch.boxi.togetherLess.dataAccess.user.dao.UserDAOinMemory;
 import ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin;
 import ch.boxi.togetherLess.dataAccess.user.dto.User;
 
@@ -21,7 +23,7 @@ public class UserFacade {
 	@GET
 	@Path("register")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public User register(
+	public UserInfo register(
 			@QueryParam("userName") 	String userName, 
 			@QueryParam("password") 	String password, 
 			@QueryParam("firstName") 	String firstName, 
@@ -31,9 +33,16 @@ public class UserFacade {
 			@QueryParam("targetDate")	String targetDate) throws ParseException{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = sdf.parse(targetDate);
-		UserDAO userDAO = new UserDAO();
+		UserDAO userDAO = DaoLocator.getUserDAO();
 		User user = userDAO.register(userName, password, firstName, lastName, email, targetWeight, date);
-		return user;
+		
+		UserInfo info = new UserInfo();
+		info.id = user.getId().toString();
+		info.firstName = user.getFirstName();
+		info.lastName = user.getLastName();
+		info.email = user.getEmail();
+		info.targetWeight = user.getTargetWeight();
+		return info;
 	}
 	
 	@GET
@@ -42,7 +51,7 @@ public class UserFacade {
 	public SessionIDHolder login(
 			@QueryParam("userName") 	String userName, 
 			@QueryParam("password") 	String password){
-		UserDAO userDAO = new UserDAO();
+		UserDAO userDAO = DaoLocator.getUserDAO();
 		User user = userDAO.login(userName, password);
 		if(user != null){
 			UUID sessionID = UUID.randomUUID();
@@ -57,9 +66,10 @@ public class UserFacade {
 	@Path("get")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public UserInfo getUser(@CookieParam("sessionID") String sessionID){
-		UserDAO userDAO = new UserDAO();
+		UserDAO userDAO = DaoLocator.getUserDAO();
 		User user = userDAO.login(sessionID);
 		UserInfo info = new UserInfo();
+		info.id = user.getId().toString();
 		info.firstName = user.getFirstName();
 		info.lastName = user.getLastName();
 		info.email = user.getEmail();

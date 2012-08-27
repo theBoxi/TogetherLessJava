@@ -1,8 +1,14 @@
 package ch.boxi.togetherLess.dataAccess.user.dto;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="userlogin")
 public class UserLogin extends Login{
-	private String username;
-	private String password;
+	@Column	private String username;
+	@Column private String password;
 	
 	public UserLogin(){
 		super();

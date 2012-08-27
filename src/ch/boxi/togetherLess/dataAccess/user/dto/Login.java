@@ -1,7 +1,24 @@
 package ch.boxi.togetherLess.dataAccess.user.dto;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class Login implements Comparable<Login>{
 
+	@Id
+	@GeneratedValue
+	private Integer id;
+	
+	@ManyToOne
+	@JoinColumn(name="userid")
 	private User user;
 
 	public Login() {
@@ -13,6 +30,14 @@ public abstract class Login implements Comparable<Login>{
 		this.user = user;
 	}
 	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public User getUser() {
 		return user;
 	}
