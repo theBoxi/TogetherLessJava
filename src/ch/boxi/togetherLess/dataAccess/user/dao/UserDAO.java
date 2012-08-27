@@ -12,7 +12,8 @@ import ch.boxi.togetherLess.dataAccess.user.dto.UserLogin;
 
 public class UserDAO {
 	private static Map<SimpleUserID, User> users = new HashMap<SimpleUserID, User>();
-	private static Map<String, UserLogin> logins = new TreeMap<String, UserLogin>();
+	private static Map<String, UserLogin> userLogins = new TreeMap<String, UserLogin>();
+	private static Map<String, CookieLogin> cookieLogins = new TreeMap<String, CookieLogin>();
 	private static long idCounter = 1000;
 	
 	static{
@@ -25,9 +26,9 @@ public class UserDAO {
 	
 	public User register(String userName, String password, String firstName, String lastName, String email, int targetWeight, Date targetDate){
 		UserLogin login;
-		if(logins.get(userName) == null){
+		if(userLogins.get(userName) == null){
 			login = new UserLogin(userName, password, null);
-			logins.put(userName, login);
+			userLogins.put(userName, login);
 		}else{
 			throw new UserAllreadyExistsException();
 		}
@@ -39,8 +40,16 @@ public class UserDAO {
 	}
 	
 	public User login(String userName, String password){
-		UserLogin login = logins.get(userName);
+		UserLogin login = userLogins.get(userName);
 		if(login != null && login.getPassword().equals(password)){
+			return login.getUser();
+		}
+		throw new UserDoesNotExistException();
+	}
+	
+	public User login(String sessionID){
+		CookieLogin login = cookieLogins.get(sessionID);
+		if(login != null){
 			return login.getUser();
 		}
 		throw new UserDoesNotExistException();
@@ -52,11 +61,14 @@ public class UserDAO {
 	
 	private static void clearinternalCach(){
 		users.clear();
-		logins.clear();
+		userLogins.clear();
+		cookieLogins.clear();
 		idCounter = 1000;
 	}
 
 	public void addCookieLogin(User user, CookieLogin cookieLogin) {
+		cookieLogin.setUser(user);
 		user.getLogins().add(cookieLogin);
+		cookieLogins.put(cookieLogin.getSessionString(), cookieLogin);
 	}
 }

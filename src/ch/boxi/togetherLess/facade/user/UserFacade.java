@@ -1,4 +1,4 @@
-package ch.boxi.togetherLess.facade;
+package ch.boxi.togetherLess.facade.user;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,15 +8,12 @@ import java.util.UUID;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import ch.boxi.togetherLess.dataAccess.user.dao.UserDAO;
 import ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin;
-import ch.boxi.togetherLess.dataAccess.user.dto.SessionIDHolder;
-import ch.boxi.togetherLess.dataAccess.user.dto.SimpleUserID;
 import ch.boxi.togetherLess.dataAccess.user.dto.User;
 
 @Path("/user")
@@ -57,12 +54,16 @@ public class UserFacade {
 	}
 	
 	@GET
-	@Path("{id}")
+	@Path("get")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public User getUser(@PathParam("id") String id, @CookieParam("sessionID") String sessionID){
+	public UserInfo getUser(@CookieParam("sessionID") String sessionID){
 		UserDAO userDAO = new UserDAO();
-		SimpleUserID userID = new SimpleUserID(id);
-		User user = userDAO.getUser(userID);
-		return user;
+		User user = userDAO.login(sessionID);
+		UserInfo info = new UserInfo();
+		info.firstName = user.getFirstName();
+		info.lastName = user.getLastName();
+		info.email = user.getEmail();
+		info.targetWeight = user.getTargetWeight();
+		return info;
 	}
 }

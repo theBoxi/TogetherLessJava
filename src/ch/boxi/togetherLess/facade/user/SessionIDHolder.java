@@ -1,4 +1,4 @@
-package ch.boxi.togetherLess.dataAccess.user.dto;
+package ch.boxi.togetherLess.facade.user;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
