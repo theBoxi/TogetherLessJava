@@ -12,8 +12,9 @@ import org.junit.Test;
 import ch.boxi.togetherLess.dataAccess.user.dao.UserDAO;
 import ch.boxi.togetherLess.dataAccess.user.dao.UserDAOjpa;
 import ch.boxi.togetherLess.dataAccess.user.dto.User;
+import ch.boxi.togetherLess.test.AbstractUnitTest;
 
-public class UserDAOjpaTest {
+public class UserDAOjpaTest extends AbstractUnitTest {
 
 	private UserDAO dao = new UserDAOjpa();
 	
