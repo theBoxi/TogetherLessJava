@@ -18,7 +18,7 @@ public class UserLogin extends Login{
 		this();
 		this.username = username;
 		this.password = password;
-//		super.setUser(user);
+		super.setUser(user);
 	}
 
 	public String getUsername() {

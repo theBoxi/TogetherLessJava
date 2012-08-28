@@ -16,7 +16,7 @@ public class CookieLogin extends Login{
 	public CookieLogin(String sessionString, User user){
 		this();
 		this.sessionID = sessionString;
-//		super.setUser(user);
+		super.setUser(user);
 	}
 
 	public String getSessionID() {
