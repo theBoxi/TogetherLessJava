@@ -46,6 +46,9 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 		Query query = session.createQuery("from UserLogin where username = '" + userName + "'");
 		UserLogin userLogin = (UserLogin)query.uniqueResult();
 		session.close();
+		if(userLogin == null){
+			throw new UserDoesNotExistException();
+		}
 		return userLogin.getUser();
 	}
 
@@ -55,6 +58,9 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 		Query query = session.createQuery("from CookieLogin where sessionID = '" + sessionID + "'");
 		CookieLogin cookieLogin = (CookieLogin) query.uniqueResult();
 		session.close();
+		if(cookieLogin == null){
+			throw new UserDoesNotExistException();
+		}
 		return cookieLogin.getUser();
 	}
 

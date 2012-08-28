@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin;
-import ch.boxi.togetherLess.dataAccess.user.dto.SimpleUserID;
 import ch.boxi.togetherLess.dataAccess.user.dto.User;
 import ch.boxi.togetherLess.dataAccess.user.dto.UserLogin;
 
@@ -20,17 +19,11 @@ public class UserDAOinMemory implements UserDAO {
 		clearinternalCach();
 	}
 	
-	/* (non-Javadoc)
-	 * @see ch.boxi.togetherLess.dataAccess.user.dao.UserDAO#getUser(java.lang.Long)
-	 */
 	@Override
 	public User getUser(Integer id){
 		return users.get(id);		
 	}
 	
-	/* (non-Javadoc)
-	 * @see ch.boxi.togetherLess.dataAccess.user.dao.UserDAO#register(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int, java.util.Date)
-	 */
 	@Override
 	public User register(String userName, String password, String firstName, String lastName, String email, int targetWeight, Date targetDate){
 		UserLogin login;
@@ -47,9 +40,6 @@ public class UserDAOinMemory implements UserDAO {
 		return user;
 	}
 	
-	/* (non-Javadoc)
-	 * @see ch.boxi.togetherLess.dataAccess.user.dao.UserDAO#login(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public User login(String userName, String password){
 		UserLogin login = userLogins.get(userName);
@@ -59,9 +49,6 @@ public class UserDAOinMemory implements UserDAO {
 		throw new UserDoesNotExistException();
 	}
 	
-	/* (non-Javadoc)
-	 * @see ch.boxi.togetherLess.dataAccess.user.dao.UserDAO#login(java.lang.String)
-	 */
 	@Override
 	public User login(String sessionID){
 		CookieLogin login = cookieLogins.get(sessionID);
@@ -71,9 +58,6 @@ public class UserDAOinMemory implements UserDAO {
 		throw new UserDoesNotExistException();
 	}
 	
-	/* (non-Javadoc)
-	 * @see ch.boxi.togetherLess.dataAccess.user.dao.UserDAO#clearCach()
-	 */
 	@Override
 	public void clearCach(){
 		UserDAOinMemory.clearinternalCach();
@@ -86,9 +70,6 @@ public class UserDAOinMemory implements UserDAO {
 		idCounter = 1000;
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.boxi.togetherLess.dataAccess.user.dao.UserDAO#addCookieLogin(ch.boxi.togetherLess.dataAccess.user.dto.User, ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin)
-	 */
 	@Override
 	public void addCookieLogin(User user, CookieLogin cookieLogin) {
 		cookieLogin.setUser(user);
