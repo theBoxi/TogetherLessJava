@@ -1,8 +1,6 @@
 package ch.boxi.togetherLess.dataAccess.user.dao;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -45,32 +43,33 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 	@Override
 	public User login(String userName, String password) {
 		Session session = takeTransaction();
-		Query query = session.createQuery("from UserLogin where username = " + userName);
-		List list = query.list();
-		List<UserLogin> userLogins = new ArrayList<>(list.size());
-		for(Object o: list){
-			UserLogin login = (UserLogin) o;
-			userLogins.add(login);
-		}
-		return userLogins.iterator().next().getUser();
+		Query query = session.createQuery("from UserLogin where username = '" + userName + "'");
+		UserLogin userLogin = (UserLogin)query.uniqueResult();
+		session.close();
+		return userLogin.getUser();
 	}
 
 	@Override
 	public User login(String sessionID) {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = takeTransaction();
+		Query query = session.createQuery("from CookieLogin where sessionID = '" + sessionID + "'");
+		CookieLogin cookieLogin = (CookieLogin) query.uniqueResult();
+		session.close();
+		return cookieLogin.getUser();
 	}
 
 	@Override
 	public void clearCach() {
-		// TODO Auto-generated method stub
-
+		// NOOP: We have a DB no Memory cache
 	}
 
 	@Override
 	public void addCookieLogin(User user, CookieLogin cookieLogin) {
-		// TODO Auto-generated method stub
-
+		Session session = takeTransaction();
+		cookieLogin.setUser(user);
+		user.getLogins().add(cookieLogin);
+		session.save(cookieLogin);
+		session.getTransaction().commit();
 	}
 
 }

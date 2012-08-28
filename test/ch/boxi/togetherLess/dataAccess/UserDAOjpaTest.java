@@ -17,16 +17,16 @@ public class UserDAOjpaTest {
 
 	private UserDAO dao = new UserDAOjpa();
 	
-	@Test
-	public void readConfig() throws Exception{
-		File localDir = new File("./");
-		System.out.println(localDir.getAbsoluteFile());
-		BufferedReader in = new BufferedReader(new FileReader("hibernate.cfg.xml"));
-		while(in.ready()){
-			System.out.println(in.readLine());
-		}
-		in.close();
-	}
+//	@Test
+//	public void readConfig() throws Exception{
+//		File localDir = new File("./");
+//		System.out.println(localDir.getAbsoluteFile());
+//		BufferedReader in = new BufferedReader(new FileReader("hibernate.cfg.xml"));
+//		while(in.ready()){
+//			System.out.println(in.readLine());
+//		}
+//		in.close();
+//	}
 	
 	@Test
 	public void testRegisterUser(){

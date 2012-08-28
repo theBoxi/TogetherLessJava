@@ -93,6 +93,6 @@ public class UserDAOinMemory implements UserDAO {
 	public void addCookieLogin(User user, CookieLogin cookieLogin) {
 		cookieLogin.setUser(user);
 		user.getLogins().add(cookieLogin);
-		cookieLogins.put(cookieLogin.getSessionString(), cookieLogin);
+		cookieLogins.put(cookieLogin.getSessionID(), cookieLogin);
 	}
 }

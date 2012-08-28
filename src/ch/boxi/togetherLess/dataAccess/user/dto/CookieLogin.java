@@ -7,7 +7,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="cookielogin")
 public class CookieLogin extends Login{
-	@Column private String sessionString;
+	@Column private String sessionID;
 	
 	public CookieLogin(){
 		super();
@@ -15,16 +15,16 @@ public class CookieLogin extends Login{
 	
 	public CookieLogin(String sessionString, User user){
 		this();
-		this.sessionString = sessionString;
+		this.sessionID = sessionString;
 //		super.setUser(user);
 	}
 
-	public String getSessionString() {
-		return sessionString;
+	public String getSessionID() {
+		return sessionID;
 	}
 
-	public void setSessionString(String sessionString) {
-		this.sessionString = sessionString;
+	public void setSessionID(String sessionID) {
+		this.sessionID = sessionID;
 	}
 	
 	@Override
@@ -37,7 +37,7 @@ public class CookieLogin extends Login{
 		int comp = super.compareTo(other);
 		if(comp == 0){
 			CookieLogin otherCookieLogin = (CookieLogin) other;
-			comp = sessionString.compareTo(otherCookieLogin.getSessionString());
+			comp = sessionID.compareTo(otherCookieLogin.getSessionID());
 		}
 		return comp;
 	}
