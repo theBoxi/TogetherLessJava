@@ -11,9 +11,9 @@ public interface UserDAO {
 
 	public abstract User register(String userName, String password,
 			String firstName, String lastName, String email, int targetWeight,
-			Date targetDate);
+			Date targetDate) throws Exception;
 
-	public abstract User login(String userName, String password);
+	public abstract User login(String userName, String password) throws Exception;
 
 	public abstract User login(String sessionID);
 

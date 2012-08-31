@@ -19,10 +19,11 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 
 	@Override
 	public User register(String userName, String password, String firstName,
-			String lastName, String email, int targetWeight, Date targetDate) {
+			String lastName, String email, int targetWeight, Date targetDate) throws Exception {
 		Session session = takeTransaction();
 		
-		UserLogin login = new UserLogin(userName, password, null);
+		String passwordHash = PasswordUtility.hashPassword(password);
+		UserLogin login = new UserLogin(userName, passwordHash, null);
 		
 		User user = new User();
 		user.setFirstName(firstName);
@@ -41,12 +42,16 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 	}
 
 	@Override
-	public User login(String userName, String password) {
+	public User login(String userName, String password) throws Exception {
 		Session session = takeTransaction();
 		Query query = session.createQuery("from UserLogin where username = '" + userName + "'");
 		UserLogin userLogin = (UserLogin)query.uniqueResult();
 		session.close();
 		if(userLogin == null){
+			throw new UserDoesNotExistException();
+		}
+		String savedPassword = userLogin.getPassword();
+		if(!PasswordUtility.checkPasswird(password, savedPassword)){
 			throw new UserDoesNotExistException();
 		}
 		return userLogin.getUser();

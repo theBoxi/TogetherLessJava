@@ -30,7 +30,7 @@ public class UserDAOjpaTest extends AbstractUnitTest {
 //	}
 	
 	@Test
-	public void testRegisterUser(){
+	public void testRegisterUser() throws Exception{
 		User user = dao.register("login", "tester11", "Tester", "11", "tester11@bluewin.ch", 80, new Date());
 		User user2 = dao.login("login", "tester11");
 		Assert.assertEquals(user, user2);

@@ -30,7 +30,7 @@ public class UserFacade {
 			@QueryParam("lastName") 	String lastName, 
 			@QueryParam("email") 		String email, 
 			@QueryParam("targetWeight") int targetWeight, 
-			@QueryParam("targetDate")	String targetDate) throws ParseException{
+			@QueryParam("targetDate")	String targetDate) throws Exception{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = sdf.parse(targetDate);
 		UserDAO userDAO = DaoLocator.getUserDAO();
@@ -50,7 +50,7 @@ public class UserFacade {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public SessionIDHolder login(
 			@QueryParam("userName") 	String userName, 
-			@QueryParam("password") 	String password){
+			@QueryParam("password") 	String password) throws Exception{
 		UserDAO userDAO = DaoLocator.getUserDAO();
 		User user = userDAO.login(userName, password);
 		if(user != null){
