@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<title>TogetherLess - Register</title>
+		<link rel="stylesheet" media="all" href="main.css"/>
 	</head>
 	
 	<body>
@@ -12,7 +13,14 @@
 				    type: 'get',
 				    data: $('#registerForm').serializeArray(), // or 'ID=1&Name=John&Age=10'
 				    success: function(data) { 
-				    	document.location="login.html";
+				    	if(data.registrationOK == true){
+				    		document.location="login.html";
+				    	} else{
+				    		for(var i = 0; i < data.errors.length; i++){
+				    			$("[name="+data.errors[i]+"]").attr("class", "errorInput");
+				    		}
+				    		alert("Registration error: " + data.errors);
+				    	}
 				    },
 				    error: function(data) { 
 				    	alert('PUT failed\nStatusText:\t ' + data.statusText + '\nresponse:\t ' + data.responseText); 
@@ -30,7 +38,7 @@
 			<input name="email" 		type="email" 	placeholder="* your@email"/><br/>
 			<input name="targetWeight" 	type="text" 	placeholder="* 80 [kg]" pattern="[0-9]*" alt="[0-9]*"/><br/>
 			<input name="targetDate" 	type="date" 	placeholder="Ziel: 2016-12-31"/><br/>
-			<input 						type="submit" 	value="registrieren" onclick="makeCall()"/>
+			<input 						type="button" 	value="registrieren" onclick="makeCall()"/>
 		</form>
 	</body>
 </html>

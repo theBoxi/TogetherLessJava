@@ -83,4 +83,13 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 		session.getTransaction().commit();
 	}
 
+	@Override
+	public boolean isUserNameFree(String userName) {
+		Session session = takeTransaction();
+		Query query = session.createQuery("from UserLogin where username = '" + userName + "'");
+		UserLogin userLogin = (UserLogin)query.uniqueResult();
+		session.close();
+		return userLogin == null;
+	}
+
 }

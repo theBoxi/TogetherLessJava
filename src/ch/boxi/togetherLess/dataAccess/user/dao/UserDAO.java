@@ -20,5 +20,7 @@ public interface UserDAO {
 	public abstract void clearCach();
 
 	public abstract void addCookieLogin(User user, CookieLogin cookieLogin);
+	
+	public abstract boolean isUserNameFree(String userName);
 
 }

@@ -76,4 +76,9 @@ public class UserDAOinMemory implements UserDAO {
 		user.getLogins().add(cookieLogin);
 		cookieLogins.put(cookieLogin.getSessionID(), cookieLogin);
 	}
+
+	@Override
+	public boolean isUserNameFree(String userName) {
+		return userLogins.get(userName) == null;
+	}
 }
