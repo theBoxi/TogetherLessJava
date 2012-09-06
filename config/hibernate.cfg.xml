@@ -23,7 +23,7 @@
     <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
 
     <!-- Echo all executed SQL to stdout -->
-    <property name="show_sql">false</property>
+    <property name="show_sql">true</property>
     
     <!-- create der Mysql struktur... achtung bei Änderung wird bestehendes überschrieben -->
     <!-- <property name="hbm2ddl.auto">none</property> -->
@@ -34,6 +34,8 @@
     <property name="hbm2ddl.auto">create-drop</property>
     
     <mapping class="ch.boxi.togetherLess.dataAccess.user.dto.User"/>
+    <mapping class="ch.boxi.togetherLess.dataAccess.user.dto.UserState"/>
+    <mapping class="ch.boxi.togetherLess.dataAccess.user.dto.ActivationCode"/>
     <mapping class="ch.boxi.togetherLess.dataAccess.user.dto.Login"/>
     <mapping class="ch.boxi.togetherLess.dataAccess.user.dto.UserLogin"/>
     <mapping class="ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin"/>

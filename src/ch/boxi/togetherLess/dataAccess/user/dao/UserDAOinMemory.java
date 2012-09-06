@@ -3,11 +3,16 @@ package ch.boxi.togetherLess.dataAccess.user.dao;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
+import ch.boxi.togetherLess.dataAccess.user.dto.ActivationCode;
 import ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin;
+import ch.boxi.togetherLess.dataAccess.user.dto.Login;
 import ch.boxi.togetherLess.dataAccess.user.dto.User;
 import ch.boxi.togetherLess.dataAccess.user.dto.UserLogin;
+import ch.boxi.togetherLess.dataAccess.user.dto.UserState;
 
 public class UserDAOinMemory implements UserDAO {
 	private static Map<Integer, User> users = new HashMap<>();
@@ -33,9 +38,25 @@ public class UserDAOinMemory implements UserDAO {
 		}else{
 			throw new UserAllreadyExistsException();
 		}
+		Set<Login> logins = new TreeSet<>();
+		logins.add(login);
+		
+		ActivationCode activationcode = new ActivationCode(null, 10);
+		
 		Integer id = idCounter++;
-		User user = new User(id, firstName, lastName, email, targetWeight, targetDate, login);
+		User user = new User(
+				id, 
+				firstName, 
+				lastName, 
+				email, 
+				targetWeight, 
+				UserState.registered, 
+				new Date(), 
+				targetDate, 
+				logins,
+				activationcode); 
 		login.setUser(user);
+		activationcode.setUser(user);
 		users.put(user.getId(), user);
 		return user;
 	}

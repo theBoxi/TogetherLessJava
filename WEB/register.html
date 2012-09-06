@@ -13,13 +13,16 @@
 				    type: 'get',
 				    data: $('#registerForm').serializeArray(), // or 'ID=1&Name=John&Age=10'
 				    success: function(data) { 
-				    	if(data.registrationOK == true){
+				    	if(data.registrationOK == "true"){
 				    		document.location="login.html";
 				    	} else{
-				    		for(var i = 0; i < data.errors.length; i++){
-				    			$("[name="+data.errors[i]+"]").attr("class", "errorInput");
+				    		for(var i = 0; i < data.errors.entry.length; i++){
+				    			if(data.errors.entry[i].value == "true"){
+				    				$("[name="+data.errors.entry[i].key+"]").attr("class", "");
+				    			} else{
+				    				$("[name="+data.errors.entry[i].key+"]").attr("class", "errorInput");
+				    			}
 				    		}
-				    		alert("Registration error: " + data.errors);
 				    	}
 				    },
 				    error: function(data) { 

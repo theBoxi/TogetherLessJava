@@ -1,14 +1,19 @@
 package ch.boxi.togetherLess.dataAccess.user.dao;
 
 import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import ch.boxi.togetherLess.dataAccess.jpaHelper.AbstractHibernateDAO;
+import ch.boxi.togetherLess.dataAccess.user.dto.ActivationCode;
 import ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin;
+import ch.boxi.togetherLess.dataAccess.user.dto.Login;
 import ch.boxi.togetherLess.dataAccess.user.dto.User;
 import ch.boxi.togetherLess.dataAccess.user.dto.UserLogin;
+import ch.boxi.togetherLess.dataAccess.user.dto.UserState;
 
 public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 
@@ -24,23 +29,33 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 		
 		String passwordHash = PasswordUtility.hashPassword(password);
 		UserLogin login = new UserLogin(userName, passwordHash, null);
+		Set<Login> logins = new TreeSet<>();
+		logins.add(login);
 		
-		User user = new User();
-		user.setFirstName(firstName);
-		user.setLastName(lastName);
-		user.setEmail(email);
-		user.setTargetDate(targetDate);
-		user.setTargetWeight(targetWeight);
-		user.getLogins().add(login);
+		ActivationCode activationCode = new ActivationCode(null, 10);
+		
+		User user = new User(
+				null, // ID will be Set by JPA
+				firstName, 
+				lastName, 
+				email, 
+				targetWeight, 
+				UserState.registered, 
+				new Date(), 
+				targetDate, 
+				logins,
+				activationCode);
 		
 		login.setUser(user);
+		activationCode.setUser(user);
 		
 		session.save(user);
 		session.save(login);
+		session.save(activationCode);
 		session.getTransaction().commit();
 		return user;
 	}
-
+	
 	@Override
 	public User login(String userName, String password) throws Exception {
 		Session session = takeTransaction();

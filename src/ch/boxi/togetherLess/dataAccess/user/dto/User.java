@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,6 +25,10 @@ public class User{
 	@Column private String lastName;
 	@Column private String email;
 	@Column private int targetWeight;
+	@Column private UserState state;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column private Date registrationDate;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column private Date targetDate;
@@ -31,19 +36,27 @@ public class User{
 	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private Set<Login> logins = new TreeSet<>();
 	
+	@OneToOne(optional=true, mappedBy="user", fetch=FetchType.EAGER)
+	private ActivationCode activatinCode;
+	
 	public User(){
 		super();
 	}
 
 	public User(Integer id, String firstName, String lastName, String email,
-			int targetWeight, Date targetDate, Login login) {
-		this();
+			int targetWeight, UserState state, Date registrationDate,
+			Date targetDate, Set<Login> logins, ActivationCode activationCode) {
+		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.targetWeight = targetWeight;
+		this.state = state;
+		this.registrationDate = registrationDate;
 		this.targetDate = targetDate;
+		this.logins = logins;
+		this.activatinCode = activationCode;
 	}
 
 	public String getFirstName() {
@@ -78,6 +91,14 @@ public class User{
 		this.targetWeight = targetWeight;
 	}
 
+	public Date getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
+	}
+
 	public Date getTargetDate() {
 		return targetDate;
 	}
@@ -93,12 +114,37 @@ public class User{
 	public Set<Login> getLogins() {
 		return logins;
 	}
+	
+	public UserLogin getUserLogin() {
+		for(Login login: logins){
+			if(login.getLoginType() == LoginType.UserLogin){
+				return (UserLogin)login;
+			}
+		}
+		return null;
+	}
 
 	public void setLogins(Set<Login> logins) {
 		this.logins = logins;
 		if(logins == null){
 			logins = new TreeSet<>();
 		}
+	}
+
+	public UserState getState() {
+		return state;
+	}
+
+	public void setState(UserState state) {
+		this.state = state;
+	}
+
+	public ActivationCode getActivatinCode() {
+		return activatinCode;
+	}
+
+	public void setActivatinCode(ActivationCode activatinCode) {
+		this.activatinCode = activatinCode;
 	}
 
 	@Override
