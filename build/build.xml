@@ -1,0 +1,23 @@
+<project name="TogetherLess" default="convertHTMLFiles" basedir="../">
+	
+	<target name="buildLocal">
+		<mkdir dir="apps"/>
+		<mkdir dir="apps/WEB"/>
+		<copy todir="apps/WEB">
+			<fileset dir="WEB"/>
+		</copy>
+		
+	</target>
+	
+	<target name="convertHTMLFiles" depends="buildLocal">
+		<java classname="ch.boxi.togetherLess.build.HtmlIncluder" failonerror="true" fork="true" dir="./">
+			<arg value="-d"/>
+			<arg value="apps/WEB"/>
+			<arg value="-v"/>
+			<classpath>
+				<pathelement path="bin"/>
+				<pathelement location="lib/commons-cli-1.2.jar"/>
+			</classpath>
+		</java>
+	</target>
+</project>
