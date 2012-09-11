@@ -1,6 +1,17 @@
 package ch.boxi.togetherLess.build;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -56,9 +67,55 @@ public class HtmlIncluder {
 	}
 	
 	private static void convertFile(File file){
-		if(verbose){
-			System.out.println("convertFile: " + file);
+		log("convertFile: " + file);
+		BufferedReader in = null;
+		PrintWriter out = null;
+		
+		// <tgl:include file="./header.html"/>
+		Pattern pattern = Pattern.compile("<tgl:include\\s+file=\"([0-9a-zA-Z\\./-_]+)\"\\s*/>");
+		
+		try {
+			File tmpFile = File.createTempFile(file.getName(), ".tmp");
+			in = new BufferedReader(new FileReader(file));
+			out = new PrintWriter(tmpFile);
+			while(in.ready()){
+				String line = in.readLine();
+				
+				Matcher matcher = pattern.matcher(line);
+				if(matcher.find()){
+					String relativFileToInclude = matcher.group(1);
+					log("found file to include: " + relativFileToInclude);
+					Path path = file.toPath();
+					File fileToInclude = new File(path.subpath(0, path.getNameCount()-1).toString() + File.separator + relativFileToInclude);
+							
+				}
+				
+				out.println(line);
+			}
+			in.close();
+			out.close();
+			Files.move(tmpFile.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		} catch (FileNotFoundException e) {
+			System.err.println("failed to convert File: " + file + " because of: " + e.getMessage());
+		} catch (IOException e) {
+			System.err.println("failed to convert File: " + file + " because of: " + e.getMessage());
+		} finally{
+			if(in != null){
+				try {
+					in.close();
+				} catch (IOException e) {
+					System.err.println("failed to close File: " + file + " because of: " + e.getMessage());
+				}
+			}
+			if(out != null){
+				out.close();
+			}
 		}
 	}
-
+	
+	private static void log(String msg){
+		if(verbose){
+			System.out.println(msg);
+		}
+	}
 }
