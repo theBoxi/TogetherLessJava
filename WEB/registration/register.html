@@ -1,5 +1,4 @@
-<tgl:include file="include/header.html"/>
-<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+<tgl:include file="../include/header.html"/>
 <script type="text/javascript">
 	function makeCall(){
 		$.ajax({
@@ -8,7 +7,7 @@
 		    data: $('#registerForm').serializeArray(), // or 'ID=1&Name=John&Age=10'
 		    success: function(data) { 
 		    	if(data.registrationOK == "true"){
-		    		document.location="login.html";
+		    		document.location="registrationDone.html";
 		    	} else{
 		    		for(var i = 0; i < data.errors.entry.length; i++){
 		    			if(data.errors.entry[i].value == "true"){
@@ -37,4 +36,4 @@
 	<input name="targetDate" 	type="date" 	placeholder="Ziel: 2016-12-31"/><br/>
 	<input 						type="button" 	value="registrieren" onclick="makeCall()"/>
 </form>
-<tgl:include file="include/footer.html"/>
+<tgl:include file="../include/footer.html"/>

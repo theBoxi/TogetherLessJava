@@ -15,7 +15,7 @@ public class TogetherLessServer {
         server.setHandler(context);
         
         ServletHolder fileServletHolder = new ServletHolder();
-        fileServletHolder.setInitParameter("basePath", "/WEB");
+        fileServletHolder.setInitParameter("basePath", "/apps/WEB");
         fileServletHolder.setServlet(new FileServlet());
         context.addServlet(fileServletHolder, "/resource/*");
         
