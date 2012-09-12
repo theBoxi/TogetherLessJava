@@ -10,6 +10,8 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +24,8 @@ import org.apache.commons.cli.PosixParser;
 
 public class HtmlIncluder {
 	private static boolean verbose = false;
+	private static Set<File> convertedFiles = new HashSet<>();
+	
 	public static void main(String[] args) {
 		Options options = new Options();
 		options.addOption("f", true, "file to Convert");
@@ -62,11 +66,22 @@ public class HtmlIncluder {
 				checkFileOrDir(subFile);
 			}
 		} else{
-			convertFile(file);
+			if(isHtmlToConvert(file)){
+				convertFile(file);
+			}
 		}
 	}
 	
+	private static boolean isHtmlToConvert(File file){
+		String fileName = file.toString();
+		return fileName.endsWith(".html") || fileName.endsWith(".htm");
+	}
+	
 	private static void convertFile(File file){
+		if(convertedFiles.contains(file)){
+			log("already converted file: " + file + " -> skipping");
+			return;
+		}
 		log("convertFile: " + file);
 		BufferedReader in = null;
 		PrintWriter out = null;
@@ -87,6 +102,7 @@ public class HtmlIncluder {
 					log("found file to include: " + relativFileToInclude);
 					Path path = file.toPath();
 					File fileToInclude = new File(path.subpath(0, path.getNameCount()-1).toString() + File.separator + relativFileToInclude);
+					convertFile(fileToInclude);
 					String includedLine = readFileInLine(fileToInclude);
 					line = matcher.replaceAll(includedLine);
 				}
@@ -95,6 +111,7 @@ public class HtmlIncluder {
 			in.close();
 			out.close();
 			Files.move(tmpFile.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			convertedFiles.add(file);
 		} catch (FileNotFoundException e) {
 			System.err.println("failed to convert File: " + file + " because of: " + e.getMessage());
 		} catch (IOException e) {
