@@ -87,9 +87,9 @@ public class HtmlIncluder {
 					log("found file to include: " + relativFileToInclude);
 					Path path = file.toPath();
 					File fileToInclude = new File(path.subpath(0, path.getNameCount()-1).toString() + File.separator + relativFileToInclude);
-							
+					String includedLine = readFileInLine(fileToInclude);
+					line = matcher.replaceAll(includedLine);
 				}
-				
 				out.println(line);
 			}
 			in.close();
@@ -111,6 +111,27 @@ public class HtmlIncluder {
 				out.close();
 			}
 		}
+	}
+	
+	private static String readFileInLine(File file){
+		BufferedReader in = null;
+		StringBuffer buffer = new StringBuffer();
+		try{
+			in = new BufferedReader(new FileReader(file));
+			while(in.ready()){
+				buffer.append(in.readLine());
+				buffer.append("\n");
+			}
+		} catch(IOException e){
+			log("failed to read file " + file + " because of " + e.getMessage());
+		} finally{
+			try {
+				in.close();
+			} catch (IOException e) {
+				log("failed to close file " + file + " because of " + e.getMessage());
+			}
+		}
+		return buffer.toString();
 	}
 	
 	private static void log(String msg){
