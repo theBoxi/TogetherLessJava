@@ -63,7 +63,7 @@ public class FileServlet extends HttpServlet {
 
         // Get base path (path to get all resources from) as init parameter.
 //        this.basePath = getServletContext().getRealPath(getInitParameter("basePath"));
-    	this.basePath = "WEB";
+    	this.basePath = "apps/WEB";
 
         // Validate base path.
         if (this.basePath == null) {
@@ -73,6 +73,7 @@ public class FileServlet extends HttpServlet {
             if (!path.exists()) {
                 throw new ServletException("FileServlet init param 'basePath' value '"
                     + this.basePath + "' does actually not exist in file system.");
+
             } else if (!path.isDirectory()) {
                 throw new ServletException("FileServlet init param 'basePath' value '"
                     + this.basePath + "' is actually not a directory in file system.");
