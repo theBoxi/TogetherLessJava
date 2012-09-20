@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.boxi.togetherLess.dataAccess.user.dao.UserDAO;
-import ch.boxi.togetherLess.dataAccess.user.dao.UserDAOinMemory;
+import ch.boxi.togetherLess.dataAccess.user.dao.inMemory.UserDAOinMemory;
 import ch.boxi.togetherLess.dataAccess.user.dto.User;
 
 public class UserDAOTest {

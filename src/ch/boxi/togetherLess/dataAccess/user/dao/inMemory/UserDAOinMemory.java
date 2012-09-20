@@ -1,23 +1,28 @@
-package ch.boxi.togetherLess.dataAccess.user.dao;
+package ch.boxi.togetherLess.dataAccess.user.dao.inMemory;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import ch.boxi.togetherLess.dataAccess.user.dao.UserAllreadyExistsException;
+import ch.boxi.togetherLess.dataAccess.user.dao.UserDAO;
+import ch.boxi.togetherLess.dataAccess.user.dao.UserDoesNotExistException;
 import ch.boxi.togetherLess.dataAccess.user.dto.ActivationCode;
 import ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin;
 import ch.boxi.togetherLess.dataAccess.user.dto.Login;
+import ch.boxi.togetherLess.dataAccess.user.dto.LoginType;
 import ch.boxi.togetherLess.dataAccess.user.dto.User;
 import ch.boxi.togetherLess.dataAccess.user.dto.UserLogin;
 import ch.boxi.togetherLess.dataAccess.user.dto.UserState;
 
 public class UserDAOinMemory implements UserDAO {
-	private static Map<Integer, User> users = new HashMap<>();
-	private static Map<String, UserLogin> userLogins = new TreeMap<String, UserLogin>();
-	private static Map<String, CookieLogin> cookieLogins = new TreeMap<String, CookieLogin>();
+	private static List<User> users = new LinkedList<>();
 	private static Integer idCounter = 1000;
 	
 	static{
@@ -31,13 +36,10 @@ public class UserDAOinMemory implements UserDAO {
 	
 	@Override
 	public User register(String userName, String password, String firstName, String lastName, String email, int targetWeight, Date targetDate){
-		UserLogin login;
-		if(userLogins.get(userName) == null){
-			login = new UserLogin(userName, password, null);
-			userLogins.put(userName, login);
-		}else{
+		if(!isUserNameFree(userName)){
 			throw new UserAllreadyExistsException();
 		}
+		UserLogin login = new UserLogin(userName, password, null);
 		Set<Login> logins = new TreeSet<>();
 		logins.add(login);
 		
@@ -57,24 +59,31 @@ public class UserDAOinMemory implements UserDAO {
 				activationcode); 
 		login.setUser(user);
 		activationcode.setUser(user);
-		users.put(user.getId(), user);
+		users.add(user);
 		return user;
 	}
 	
 	@Override
 	public User login(String userName, String password){
-		UserLogin login = userLogins.get(userName);
-		if(login != null && login.getPassword().equals(password)){
-			return login.getUser();
+		User user = getUser(new UserFinderByUserLogin(userName));
+		if(user != null){
+			for(Login login: user.getLogins()){
+				if(login.getLoginType() == LoginType.UserLogin){
+					UserLogin userLogin = (UserLogin) login;
+					if(userLogin.getPassword().equals(password)){
+						return login.getUser();
+					}
+				}
+			}
 		}
 		throw new UserDoesNotExistException();
 	}
 	
 	@Override
 	public User login(String sessionID){
-		CookieLogin login = cookieLogins.get(sessionID);
-		if(login != null){
-			return login.getUser();
+		User user = getUser(new UserFinderBySessionID(sessionID));
+		if(user != null){
+			return user;
 		}
 		throw new UserDoesNotExistException();
 	}
@@ -86,8 +95,6 @@ public class UserDAOinMemory implements UserDAO {
 	
 	private static void clearinternalCach(){
 		users.clear();
-		userLogins.clear();
-		cookieLogins.clear();
 		idCounter = 1000;
 	}
 
@@ -95,11 +102,30 @@ public class UserDAOinMemory implements UserDAO {
 	public void addCookieLogin(User user, CookieLogin cookieLogin) {
 		cookieLogin.setUser(user);
 		user.getLogins().add(cookieLogin);
-		cookieLogins.put(cookieLogin.getSessionID(), cookieLogin);
 	}
 
 	@Override
 	public boolean isUserNameFree(String userName) {
-		return userLogins.get(userName) == null;
+		User user = getUser(new UserFinderByUserLogin(userName));
+		return user == null;
+	}
+	
+	private User getUser(UserFinder finder){
+		for(User user: users){
+			if(finder.isThisUser(user)){
+				return user;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public void activateUser(String activationCode) {
+		User user = getUser(new UserFinderByActivationCode(activationCode));
+		if(user != null){
+			user.setState(UserState.active);
+		}else{
+			throw new UserDoesNotExistException();
+		}
 	}
 }

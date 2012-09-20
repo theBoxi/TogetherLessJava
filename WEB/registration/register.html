@@ -7,7 +7,7 @@
 		    data: $('#registerForm').serializeArray(), // or 'ID=1&Name=John&Age=10'
 		    success: function(data) { 
 		    	if(data.registrationOK == "true"){
-		    		document.location="registrationDone.html";
+		    		document.location="registerDone.html";
 		    	} else{
 		    		for(var i = 0; i < data.errors.entry.length; i++){
 		    			if(data.errors.entry[i].value == "true"){

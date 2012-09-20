@@ -107,4 +107,18 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 		return userLogin == null;
 	}
 
+	@Override
+	public void activateUser(String activationCode) {
+		Session session = takeTransaction();
+		Query query = session.createQuery("from ActivationCode where code = '" + activationCode + "'");
+		ActivationCode code = (ActivationCode)query.uniqueResult();
+		if(code != null){
+			User user = code.getUser();
+			user.setState(UserState.active);
+			session.save(user);
+		} else{
+			throw new UserDoesNotExistException();
+		}
+	}
+
 }

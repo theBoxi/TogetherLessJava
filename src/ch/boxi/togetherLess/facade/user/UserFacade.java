@@ -140,4 +140,12 @@ public class UserFacade {
 		info.targetWeight = user.getTargetWeight();
 		return info;
 	}
+	
+	@GET
+	@Path("activate")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public void activateUser(@QueryParam("activationCode") String activationCode){
+		UserDAO userDAO = DaoLocator.getUserDAO();
+		userDAO.activateUser(activationCode);
+	}
 }

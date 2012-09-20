@@ -1,0 +1,40 @@
+<tgl:include file="../include/header.html"/>
+	<script type="text/javascript">
+		function makeCall(){
+			$.ajax({
+			    url: 'http://localhost:8080/rest/user/register',
+			    type: 'get',
+			    data: $('#registerForm').serializeArray(), // or 'ID=1&Name=John&Age=10'
+			    success: function(data) { 
+		    		document.location="../login.html";
+			    },
+			    error: function(data) { 
+			    	alert('PUT failed\nStatusText:\t ' + data.statusText + '\nresponse:\t ' + data.responseText); 
+			    }
+			});
+		}
+	</script>
+	<div id="activationDone" style="display: none;">
+		<h1>Activierung abgeschlossen</h1>
+		<p>Sie haben Ihren Account erfolgreich activiert.
+			<br/>
+		Sie können sich nun <a href="../login.html">einloggen</a></p>
+	</div>
+	
+	<div id="activationFailed" style="display: none;">
+		<h1>Activierung fehlgeschlagen!</h1>
+		<p>bla bla bla</p>	
+	</div>
+	
+	<div id="noActivationCode" style="display: none;">
+		<h1>Keine activierung möglich!</h1>
+		<p>Ohne Aktivierungscode ist es nicht möglich TogetherLess zu benutzen. Loggen Sie sich ein, und aktivieren Sie ihren Account erneut.</p>
+		<p>zum <a href="../login.html">login</a>.</p>
+	</div>
+	
+	<div id="alreadyActivated" style="display: none;">
+		<h1>Account ist bereits aktiviert</h1>
+		<p>Ihr Account ist bereits aktiviert und kann benutzt werden.</p>
+		<p>Bitte <a href="../login.html">loggen</a> Sie sich ein.</p>
+	</div>
+<tgl:include file="../include/footer.html"/>

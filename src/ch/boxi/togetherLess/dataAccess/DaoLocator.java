@@ -2,9 +2,11 @@ package ch.boxi.togetherLess.dataAccess;
 
 import ch.boxi.togetherLess.dataAccess.user.dao.UserDAO;
 import ch.boxi.togetherLess.dataAccess.user.dao.UserDAOjpa;
+import ch.boxi.togetherLess.dataAccess.user.dao.inMemory.UserDAOinMemory;
 
 public class DaoLocator {
 	public static UserDAO getUserDAO(){
+		//return new UserDAOinMemory();
 		return new UserDAOjpa();
 	}
 }

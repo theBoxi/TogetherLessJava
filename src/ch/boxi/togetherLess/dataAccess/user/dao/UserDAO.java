@@ -23,4 +23,5 @@ public interface UserDAO {
 	
 	public abstract boolean isUserNameFree(String userName);
 
+	public abstract void activateUser(String activationCode);
 }
