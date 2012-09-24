@@ -10,7 +10,6 @@ import javax.persistence.Inheritance;
   *    
   */
 
-@Inheritance
 public enum UserState {
 	registered,
 	active,

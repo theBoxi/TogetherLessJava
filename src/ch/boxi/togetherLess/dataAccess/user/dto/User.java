@@ -6,6 +6,8 @@ import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -27,7 +29,9 @@ public class User{
 	@Column private String lastName;
 	@Column private String email;
 	@Column private int targetWeight;
-	@Column private UserState state;
+	
+	@Enumerated(EnumType.STRING) 
+	private UserState state;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column private Date registrationDate;

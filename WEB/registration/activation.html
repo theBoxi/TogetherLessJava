@@ -2,23 +2,35 @@
 	<script type="text/javascript">
 		function makeCall(){
 			$.ajax({
-			    url: 'http://localhost:8080/rest/user/register',
+			    url: 'http://localhost:8080/rest/user/activate',
 			    type: 'get',
-			    data: $('#registerForm').serializeArray(), // or 'ID=1&Name=John&Age=10'
+			    data: 'activationCode='+$.getURLParam("activationCode"), // or 'ID=1&Name=John&Age=10'
 			    success: function(data) { 
-		    		document.location="../login.html";
+			    	test = $("#activationDone");
+			    	test.attr("style", "display: block;");
 			    },
 			    error: function(data) { 
-			    	alert('PUT failed\nStatusText:\t ' + data.statusText + '\nresponse:\t ' + data.responseText); 
+			    	test = $("#activationFailed");
+			    	test.attr("style", "display: block;");
 			    }
 			});
 		}
+		
+		$(document).ready(function() {
+			$("#debug").text($.getURLParam("activationCode"));
+			makeCall();
+		});
 	</script>
+	
+	<div id="debug"></div>
+	
 	<div id="activationDone" style="display: none;">
 		<h1>Activierung abgeschlossen</h1>
-		<p>Sie haben Ihren Account erfolgreich activiert.
+		<p>
+			Sie haben Ihren Account erfolgreich activiert.
 			<br/>
-		Sie können sich nun <a href="../login.html">einloggen</a></p>
+			Sie können sich nun <a href="../login.html">einloggen</a>
+		</p>
 	</div>
 	
 	<div id="activationFailed" style="display: none;">
