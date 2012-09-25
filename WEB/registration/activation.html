@@ -4,25 +4,27 @@
 			$.ajax({
 			    url: 'http://localhost:8080/rest/user/activate',
 			    type: 'get',
-			    data: 'activationCode='+$.getURLParam("activationCode"), // or 'ID=1&Name=John&Age=10'
+			    data: 'activationCode='+$.getURLParam("activationCode"),
 			    success: function(data) { 
-			    	test = $("#activationDone");
-			    	test.attr("style", "display: block;");
+			    	$("#activationDone").attr("style", "display: block;");
 			    },
 			    error: function(data) { 
-			    	test = $("#activationFailed");
-			    	test.attr("style", "display: block;");
+			    	if(data.status == 461){
+			    		$("#alreadyActivated").attr("style", "display: block;");
+			    	}
+			    	$("#activationFailed").attr("style", "display: block;");
 			    }
 			});
 		}
 		
 		$(document).ready(function() {
-			$("#debug").text($.getURLParam("activationCode"));
-			makeCall();
+			if($.getURLParam("activationCode") == null){
+				$("#noActivationCode").attr("style", "display: block;");
+			} else{
+				makeCall();
+			}
 		});
 	</script>
-	
-	<div id="debug"></div>
 	
 	<div id="activationDone" style="display: none;">
 		<h1>Activierung abgeschlossen</h1>

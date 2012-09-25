@@ -8,6 +8,9 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import ch.boxi.togetherLess.dataAccess.jpaHelper.AbstractHibernateDAO;
+import ch.boxi.togetherLess.dataAccess.user.dao.exception.ActivationCodeOutOfDateException;
+import ch.boxi.togetherLess.dataAccess.user.dao.exception.UserAllreadyActivatedException;
+import ch.boxi.togetherLess.dataAccess.user.dao.exception.UserDoesNotExistException;
 import ch.boxi.togetherLess.dataAccess.user.dto.ActivationCode;
 import ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin;
 import ch.boxi.togetherLess.dataAccess.user.dto.Login;
@@ -113,6 +116,12 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 		Query query = session.createQuery("from ActivationCode where code = '" + activationCode + "'");
 		ActivationCode code = (ActivationCode)query.uniqueResult();
 		if(code != null){
+			if(code.getValidUntil().before(new Date())){
+				throw new ActivationCodeOutOfDateException();
+			}
+			if(code.getUser().getState() == UserState.active){
+				throw new UserAllreadyActivatedException();
+			}
 			User user = code.getUser();
 			user.setState(UserState.active);
 			session.save(user);

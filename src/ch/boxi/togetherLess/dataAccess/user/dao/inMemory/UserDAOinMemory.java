@@ -10,9 +10,10 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import ch.boxi.togetherLess.dataAccess.user.dao.UserAllreadyExistsException;
 import ch.boxi.togetherLess.dataAccess.user.dao.UserDAO;
-import ch.boxi.togetherLess.dataAccess.user.dao.UserDoesNotExistException;
+import ch.boxi.togetherLess.dataAccess.user.dao.exception.ActivationCodeOutOfDateException;
+import ch.boxi.togetherLess.dataAccess.user.dao.exception.UserAllreadyExistsException;
+import ch.boxi.togetherLess.dataAccess.user.dao.exception.UserDoesNotExistException;
 import ch.boxi.togetherLess.dataAccess.user.dto.ActivationCode;
 import ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin;
 import ch.boxi.togetherLess.dataAccess.user.dto.Login;
@@ -123,6 +124,9 @@ public class UserDAOinMemory implements UserDAO {
 	public void activateUser(String activationCode) {
 		User user = getUser(new UserFinderByActivationCode(activationCode));
 		if(user != null){
+			if(user.getActivatinCode().getValidUntil().before(new Date())){
+				throw new ActivationCodeOutOfDateException();
+			}
 			user.setState(UserState.active);
 		}else{
 			throw new UserDoesNotExistException();
