@@ -27,11 +27,9 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 
 	@Override
 	public User register(String userName, String password, String firstName,
-			String lastName, String email, int targetWeight, Date targetDate) throws Exception {
+			String lastName, String email, int targetWeight, Date targetDate) {
 		Session session = takeTransaction();
-		
-		String passwordHash = PasswordUtility.hashPassword(password);
-		UserLogin login = new UserLogin(userName, passwordHash, null);
+		UserLogin login = new UserLogin(userName, password, null);
 		Set<Login> logins = new TreeSet<>();
 		logins.add(login);
 		
@@ -60,16 +58,12 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 	}
 	
 	@Override
-	public User login(String userName, String password) throws Exception {
+	public User getUser(String userName) {
 		Session session = takeTransaction();
 		Query query = session.createQuery("from UserLogin where username = '" + userName + "'");
 		UserLogin userLogin = (UserLogin)query.uniqueResult();
 		session.close();
 		if(userLogin == null){
-			throw new UserDoesNotExistException();
-		}
-		String savedPassword = userLogin.getPassword();
-		if(!PasswordUtility.checkPasswird(password, savedPassword)){
 			throw new UserDoesNotExistException();
 		}
 		return userLogin.getUser();
@@ -118,16 +112,26 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 		if(code != null){
 			if(code.getValidUntil().before(new Date())){
 				throw new ActivationCodeOutOfDateException();
-			}
-			if(code.getUser().getState() == UserState.active){
+			} else if(code.getUser().getState() == UserState.active){
 				throw new UserAllreadyActivatedException();
+			} else{
+				User user = code.getUser();
+				user.setState(UserState.active);
+				session.save(user);
 			}
-			User user = code.getUser();
-			user.setState(UserState.active);
-			session.save(user);
 		} else{
 			throw new UserDoesNotExistException();
 		}
+	}
+
+	@Override
+	public void addActivationCode(User user, ActivationCode activationCode) {
+		Session session = takeTransaction();
+		user.setActivatinCode(activationCode);
+		activationCode.setUser(user);
+		session.update(user);
+		session.update(activationCode);
+		session.close();
 	}
 
 }

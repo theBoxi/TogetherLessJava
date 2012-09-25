@@ -1,13 +1,9 @@
 package ch.boxi.togetherLess.dataAccess.user.dao.inMemory;
 
-import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import ch.boxi.togetherLess.dataAccess.user.dao.UserDAO;
@@ -17,7 +13,6 @@ import ch.boxi.togetherLess.dataAccess.user.dao.exception.UserDoesNotExistExcept
 import ch.boxi.togetherLess.dataAccess.user.dto.ActivationCode;
 import ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin;
 import ch.boxi.togetherLess.dataAccess.user.dto.Login;
-import ch.boxi.togetherLess.dataAccess.user.dto.LoginType;
 import ch.boxi.togetherLess.dataAccess.user.dto.User;
 import ch.boxi.togetherLess.dataAccess.user.dto.UserLogin;
 import ch.boxi.togetherLess.dataAccess.user.dto.UserState;
@@ -65,19 +60,12 @@ public class UserDAOinMemory implements UserDAO {
 	}
 	
 	@Override
-	public User login(String userName, String password){
+	public User getUser(String userName){
 		User user = getUser(new UserFinderByUserLogin(userName));
-		if(user != null){
-			for(Login login: user.getLogins()){
-				if(login.getLoginType() == LoginType.UserLogin){
-					UserLogin userLogin = (UserLogin) login;
-					if(userLogin.getPassword().equals(password)){
-						return login.getUser();
-					}
-				}
-			}
+		if(user == null){
+			throw new UserDoesNotExistException();
 		}
-		throw new UserDoesNotExistException();
+		return user;
 	}
 	
 	@Override
@@ -131,5 +119,11 @@ public class UserDAOinMemory implements UserDAO {
 		}else{
 			throw new UserDoesNotExistException();
 		}
+	}
+
+	@Override
+	public void addActivationCode(User user, ActivationCode activationCode) {
+		user.setActivatinCode(activationCode);
+		activationCode.setUser(user);
 	}
 }

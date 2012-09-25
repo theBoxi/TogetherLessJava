@@ -1,12 +1,4 @@
-<html>
-	<head>
-		<title>TogetherLess - Login</title>
-	</head>
-	
-	<body>
-		<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
-		<script type="text/javascript" src="cookie.js"></script>
-		
+<tgl:include file="include/header.html"/>
 		<script type="text/javascript">
 			function makeCall(){
 				$.ajax({
@@ -23,11 +15,15 @@
 				});
 			}
 		</script>
+		
+		<div id="NotActivated">
+		
+		</div>
+		
 		<form id="registerForm">
 			<h1>Login</h1>
 			<input name="userName"	type="text"		placeholder="Username"/><br/>
 			<input name="password" 	type="password" placeholder="Password"/><br/>
 			<input 					type="button" 	value="login" onclick="makeCall()"/>
 		</form>
-	</body>
-</html>
+<tgl:include file="include/footer.html"/>

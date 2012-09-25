@@ -3,8 +3,6 @@ package ch.boxi.togetherLess.facade.user;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Properties;
-import java.util.UUID;
 
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
@@ -19,8 +17,7 @@ import ch.boxi.togetherLess.dataAccess.DaoLocator;
 import ch.boxi.togetherLess.dataAccess.user.dao.UserDAO;
 import ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin;
 import ch.boxi.togetherLess.dataAccess.user.dto.User;
-import ch.boxi.togetherLess.emailService.EmailServiceConsoleImpl;
-import ch.boxi.togetherLess.emailService.Emailtemplate;
+import ch.boxi.togetherLess.manager.UserManager;
 
 @Path("/user")
 public class UserFacade {
@@ -37,30 +34,17 @@ public class UserFacade {
 			@QueryParam("targetWeight") int targetWeight, 
 			@QueryParam("targetDate")	String targetDate) throws Exception{
 		
-		UserDAO userDAO = DaoLocator.getUserDAO();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		RegisterInfo info = isValidUserParams(userName, password, password2, firstName, lastName, email, targetWeight, targetDate);
 		
 		if(!info.hasErrors()){
+			UserManager manager = new UserManager();
 			Date date = sdf.parse(targetDate);
-			User user = userDAO.register(userName, password, firstName, lastName, email, targetWeight, date);
+			User user = manager.register(userName, password, password2, firstName, lastName, email, targetWeight, date);
 			info.userID = user.getId();
 			info.registrationOK = true;
-			EmailServiceConsoleImpl emailService = new EmailServiceConsoleImpl();
-			emailService.sendMail(email, Emailtemplate.Register, getRegistrationMailProperties(user));
 		}
 		return info;
-	}
-	
-	private Properties getRegistrationMailProperties(User user){
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyy hh:mm");
-		Properties properties = new Properties();
-		properties.setProperty("firstName", user.getFirstName());
-		properties.setProperty("lasName", user.getLastName());
-		properties.setProperty("userName", user.getUserLogin().getUsername());
-		properties.setProperty("activationCode", user.getActivatinCode().getCode());
-		properties.setProperty("validUntil", sdf.format(user.getActivatinCode().getValidUntil()));
-		return properties;
 	}
 	
 	private RegisterInfo isValidUserParams(
@@ -115,23 +99,17 @@ public class UserFacade {
 	public SessionIDHolder login(
 			@QueryParam("userName") 	String userName, 
 			@QueryParam("password") 	String password) throws Exception{
-		UserDAO userDAO = DaoLocator.getUserDAO();
-		User user = userDAO.login(userName, password);
-		if(user != null){
-			UUID sessionID = UUID.randomUUID();
-			CookieLogin cookieLogin = new CookieLogin(sessionID.toString(), user);
-			userDAO.addCookieLogin(user, cookieLogin);
-			return new SessionIDHolder(sessionID.toString());
-		}
-		return null;
+		UserManager manager = new UserManager();
+		CookieLogin cookieLogin = manager.login(userName, password);
+		return new SessionIDHolder(cookieLogin.getSessionID());
 	}
 	
 	@GET
 	@Path("get")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public UserInfo getUser(@CookieParam("sessionID") String sessionID){
-		UserDAO userDAO = DaoLocator.getUserDAO();
-		User user = userDAO.login(sessionID);
+		UserManager manager = new UserManager();
+		User user = manager.loadUser(new CookieLogin(sessionID, null));
 		UserInfo info = new UserInfo();
 		info.id = user.getId().toString();
 		info.firstName = user.getFirstName();
@@ -145,7 +123,7 @@ public class UserFacade {
 	@Path("activate")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public void activateUser(@QueryParam("activationCode") String activationCode){
-		UserDAO userDAO = DaoLocator.getUserDAO();
-		userDAO.activateUser(activationCode);
+		UserManager manager = new UserManager();
+		manager.activateUser(activationCode);
 	}
 }

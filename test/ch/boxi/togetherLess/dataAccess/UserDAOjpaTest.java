@@ -1,9 +1,5 @@
 package ch.boxi.togetherLess.dataAccess;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.Date;
 
 import org.junit.Assert;
@@ -32,7 +28,7 @@ public class UserDAOjpaTest extends AbstractUnitTest {
 	@Test
 	public void testRegisterUser() throws Exception{
 		User user = dao.register("login", "tester11", "Tester", "11", "tester11@bluewin.ch", 80, new Date());
-		User user2 = dao.login("login", "tester11");
+		User user2 = dao.getUser("login");
 		Assert.assertEquals(user, user2);
 	}
 }
