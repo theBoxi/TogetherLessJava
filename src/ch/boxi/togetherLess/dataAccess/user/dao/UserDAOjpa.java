@@ -92,7 +92,7 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 		cookieLogin.setUser(user);
 		user.getLogins().add(cookieLogin);
 		session.save(cookieLogin);
-		session.flush();
+		session.getTransaction().commit();
 	}
 
 	@Override
@@ -117,7 +117,8 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 			} else{
 				User user = code.getUser();
 				user.setState(UserState.active);
-				session.flush();
+				session.merge(user);
+				session.getTransaction().commit();
 			}
 		} else{
 			throw new UserDoesNotExistException();
@@ -129,10 +130,9 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 		Session session = takeTransaction();
 		user.setActivatinCode(activationCode);
 		activationCode.setUser(user);
-		session.saveOrUpdate(user);
-		session.saveOrUpdate(activationCode);
-		session.flush();
-		session.close();
+		session.merge(user);
+		session.merge(activationCode);
+		session.getTransaction().commit();
 	}
 
 }
