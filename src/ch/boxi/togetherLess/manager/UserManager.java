@@ -53,8 +53,7 @@ public class UserManager {
 		
 		if(!passwordOk){
 			throw new UserDoesNotExistException();
-		} else if(user.getState() == UserState.registered){
-			
+		} else if(user.getState() == UserState.registered){	
 			userDAO.addActivationCode(user, renew(user.getActivatinCode()));
 			sendActivationMail(user);
 			throw new UserIsNotActivatedException(user.getEmail());
