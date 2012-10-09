@@ -1,18 +1,18 @@
 package ch.boxi.togetherLess.dataAccess.user.dao.exception;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import ch.boxi.togetherLess.dataAccess.exception.LanguageDependentText;
+import ch.boxi.togetherLess.dataAccess.exception.TogetherLessException;
 
-public class UserDoesNotExistException extends WebApplicationException {
+public class UserDoesNotExistException extends TogetherLessException {
 	private static final long serialVersionUID = 4177936057058634334L;
 
+	private static LanguageDependentText msg = new LanguageDependentText();
+	static{
+		msg.put("de", "Benutzer unbekannt");
+		msg.put("en", "User does not exist");
+	}
+	
 	public UserDoesNotExistException() {
-		super(
-			Response.status(471)
-			.type(MediaType.TEXT_PLAIN)
-			.entity("User does not exist")
-			.build()
-		);
+		super(471, "1002", msg, null);
 	}
 }

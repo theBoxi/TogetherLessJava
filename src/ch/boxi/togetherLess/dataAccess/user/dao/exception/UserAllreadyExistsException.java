@@ -1,19 +1,19 @@
 package ch.boxi.togetherLess.dataAccess.user.dao.exception;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import ch.boxi.togetherLess.dataAccess.exception.LanguageDependentText;
+import ch.boxi.togetherLess.dataAccess.exception.TogetherLessException;
 
-public class UserAllreadyExistsException extends WebApplicationException {
+public class UserAllreadyExistsException extends TogetherLessException {
 	private static final long serialVersionUID = -5995503971969892180L;
 
+	private static LanguageDependentText msg = new LanguageDependentText();
+	static{
+		msg.put("de", "Benutzer existiert bereits");
+		msg.put("en", "User allready exists");
+	}
+	
 	public UserAllreadyExistsException() {
-		super(
-			Response.status(470)
-			.type(MediaType.TEXT_PLAIN)
-			.entity("User allready exists")
-			.build()
-		);
+		super(470, "1002", msg, null);
 	}
 
 }

@@ -1,22 +1,24 @@
 package ch.boxi.togetherLess.dataAccess.user.dao.exception;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import java.util.Map;
+import java.util.TreeMap;
 
-public class UserIsNotActivatedException extends WebApplicationException {
+import ch.boxi.togetherLess.dataAccess.exception.LanguageDependentText;
+import ch.boxi.togetherLess.dataAccess.exception.TogetherLessException;
+
+public class UserIsNotActivatedException extends TogetherLessException {
 	private static final long serialVersionUID = 126573109559222302L;
 
 	private String emailForResendingActivationCode;
 	
+	private static LanguageDependentText msg = new LanguageDependentText();
+	static{
+		msg.put("de", "Benutzer unbekannt");
+		msg.put("en", "User does not exist");
+	}
+	
 	public UserIsNotActivatedException(String emailForResendingActivationCode) {
-		super(
-			Response.status(462)
-			.type(MediaType.APPLICATION_JSON)
-			.entity("{\"msg\":\"User is not activated\", \"email\":\""+emailForResendingActivationCode+"\"}")
-			.build()
-		);
-		
+		super(462, "1003", msg, createAdditionalFieldsMap(emailForResendingActivationCode), null);
 		this.emailForResendingActivationCode = emailForResendingActivationCode;
 	}
 	
@@ -24,4 +26,9 @@ public class UserIsNotActivatedException extends WebApplicationException {
 		return emailForResendingActivationCode;
 	}
 
+	private static Map<String, String> createAdditionalFieldsMap(String emailForResendingActivationCode){
+		Map<String, String> fields = new TreeMap<String, String>();
+		fields.put("email", emailForResendingActivationCode);
+		return fields;
+	}
 }

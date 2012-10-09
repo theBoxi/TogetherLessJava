@@ -4,3 +4,10 @@
 	border-width:	1px;
 	color:			#FF0000;
 }
+
+.errmsg{
+	border-color:	#FF0000; 
+	border-style:	solid; 
+	border-width:	1px;
+	color:			#FF0000;
+}

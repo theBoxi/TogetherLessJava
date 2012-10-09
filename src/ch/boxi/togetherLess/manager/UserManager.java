@@ -6,6 +6,7 @@ import java.util.Properties;
 import java.util.UUID;
 
 import ch.boxi.togetherLess.dataAccess.DaoLocator;
+import ch.boxi.togetherLess.dataAccess.exception.LanguageDependentText;
 import ch.boxi.togetherLess.dataAccess.user.dao.PasswordUtility;
 import ch.boxi.togetherLess.dataAccess.user.dao.UserDAO;
 import ch.boxi.togetherLess.dataAccess.user.dao.exception.UserDoesNotExistException;
@@ -32,7 +33,10 @@ public class UserManager {
 		try {
 			passwordHash = PasswordUtility.hashPassword(password);
 		} catch (Exception e) {
-			throw new ServerException("1000", "Server Fehler", e);
+			LanguageDependentText msg = new LanguageDependentText();
+			msg.put("de", "Server Fehler");
+			msg.put("en", "Server error");
+			throw new ServerException("1000", msg, e);
 		}
 		User user = userDAO.register(userName, passwordHash, firstName, lastName, email, targetWeight, targetDate);
 		sendActivationMail(user);
@@ -48,7 +52,10 @@ public class UserManager {
 		try{
 			passwordOk = PasswordUtility.checkPasswird(password, user.getUserLogin().getPassword());
 		}catch(Exception e){
-			throw new ServerException("1000", "Server Fehler", e);
+			LanguageDependentText msg = new LanguageDependentText();
+			msg.put("de", "Server Fehler");
+			msg.put("en", "Server error");
+			throw new ServerException("1000", msg, e);
 		}
 		
 		if(!passwordOk){

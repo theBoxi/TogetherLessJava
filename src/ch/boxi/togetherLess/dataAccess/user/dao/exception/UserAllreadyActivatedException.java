@@ -1,18 +1,19 @@
 package ch.boxi.togetherLess.dataAccess.user.dao.exception;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import ch.boxi.togetherLess.dataAccess.exception.LanguageDependentText;
+import ch.boxi.togetherLess.dataAccess.exception.TogetherLessException;
 
-public class UserAllreadyActivatedException extends WebApplicationException {
+public class UserAllreadyActivatedException extends TogetherLessException {
 	private static final long serialVersionUID = 1L;
 
+	private static LanguageDependentText msg = new LanguageDependentText();
+	
+	static{
+		msg.put("de", "Benutzer ist schon activiert");
+		msg.put("en", "User allready activated");
+	}
+	
 	public UserAllreadyActivatedException() {
-		super(
-			Response.status(461)
-			.type(MediaType.TEXT_PLAIN)
-			.entity("User allready activated")
-			.build()
-		);
+		super(461, "1001", msg, null);
 	}
 }

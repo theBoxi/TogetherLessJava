@@ -10,18 +10,29 @@
 				    	document.location="overview.html";
 				    },
 				    error: function(data) { 
+				    	//responseText: "{"tglErrorCode":"1003", "msg":[{"lang":"de","msg":"Benutzer unbekannt"},{"lang":"en","msg":"User does not exist"}],"email":"ich@boxi.ch"}"
+				    	//$('#NotActivated').html(data.status);
+				    	var lang = "de";
+				    	var msg = "Es ist ein Fehler aufgetreten!";
+				    	var response = jQuery.parseJSON(data.responseText);
+				    	$.each(response.msg, function(index, value){
+				    		if(value.lang == lang){
+				    			msg = value.msg;
+				    		}
+				    	});
+				    	$('#NotActivated').html(msg + "</br>email: " + response.email);
 				    	alert('PUT failed\nStatusText:\t ' + data.statusText + '\nresponse:\t ' + data.responseText); 
 				    }
 				});
 			}
 		</script>
 		
-		<div id="NotActivated">
-		
-		</div>
-		
 		<form id="registerForm">
 			<h1>Login</h1>
+			<div id="NotActivated" class="errmsg">
+		
+			</div>
+		
 			<input name="userName"	type="text"		placeholder="Username"/><br/>
 			<input name="password" 	type="password" placeholder="Password"/><br/>
 			<input 					type="button" 	value="login" onclick="makeCall()"/>

@@ -1,20 +1,18 @@
 package ch.boxi.togetherLess.manager;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import ch.boxi.togetherLess.dataAccess.exception.LanguageDependentText;
+import ch.boxi.togetherLess.dataAccess.exception.TogetherLessException;
 
-public class ServerException extends WebApplicationException {
+public class ServerException extends TogetherLessException {
 	private static final long serialVersionUID = 7450203192586145908L;
-	
-	public ServerException(String errorCode, String externalMsg,
+
+	public ServerException(String tglErrorCode, LanguageDependentText msg,
 			Exception e) {
-		super(	e, 
-				Response.status(500)
-				.type(MediaType.APPLICATION_JSON)
-				.entity("{\"errorCode\":\""+errorCode+"\", \"msg\":\""+externalMsg+"\"}")
-				.build()
-		);
+		super(tglErrorCode, msg, e);
+	}
+
+	public ServerException(String tglErrorCode, LanguageDependentText msg) {
+		super(tglErrorCode, msg);
 	}
 
 }
