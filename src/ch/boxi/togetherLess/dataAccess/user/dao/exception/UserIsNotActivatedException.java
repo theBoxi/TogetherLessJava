@@ -13,8 +13,8 @@ public class UserIsNotActivatedException extends TogetherLessException {
 	
 	private static LanguageDependentText msg = new LanguageDependentText();
 	static{
-		msg.put("de", "Benutzer unbekannt");
-		msg.put("en", "User does not exist");
+		msg.put("de", "noch nicht activiert");
+		msg.put("en", "not jet activated");
 	}
 	
 	public UserIsNotActivatedException(String emailForResendingActivationCode) {
