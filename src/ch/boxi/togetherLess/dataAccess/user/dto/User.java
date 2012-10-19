@@ -26,16 +26,12 @@ public class User{
 	@Column private String firstName;
 	@Column private String lastName;
 	@Column private String email;
-	@Column private int targetWeight;
 	
 	@Enumerated(EnumType.STRING) 
 	private UserState state;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column private Date registrationDate;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column private Date targetDate;
 	
 	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private Set<Login> logins = new TreeSet<>();
@@ -48,17 +44,15 @@ public class User{
 	}
 
 	public User(Integer id, String firstName, String lastName, String email,
-			int targetWeight, UserState state, Date registrationDate,
-			Date targetDate, Set<Login> logins, ActivationCode activationCode) {
+			UserState state, Date registrationDate, Set<Login> logins, 
+			ActivationCode activationCode) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.targetWeight = targetWeight;
 		this.state = state;
 		this.registrationDate = registrationDate;
-		this.targetDate = targetDate;
 		this.logins = logins;
 		this.activatinCode = activationCode;
 	}
@@ -87,28 +81,12 @@ public class User{
 		this.email = email;
 	}
 
-	public int getTargetWeight() {
-		return targetWeight;
-	}
-
-	public void setTargetWeight(int targetWeight) {
-		this.targetWeight = targetWeight;
-	}
-
 	public Date getRegistrationDate() {
 		return registrationDate;
 	}
 
 	public void setRegistrationDate(Date registrationDate) {
 		this.registrationDate = registrationDate;
-	}
-
-	public Date getTargetDate() {
-		return targetDate;
-	}
-
-	public void setTargetDate(Date targetDate) {
-		this.targetDate = targetDate;
 	}
 
 	public Integer getId() {
@@ -155,6 +133,8 @@ public class User{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result
+				+ ((activatinCode == null) ? 0 : activatinCode.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result
 				+ ((firstName == null) ? 0 : firstName.hashCode());
@@ -162,9 +142,10 @@ public class User{
 		result = prime * result
 				+ ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((logins == null) ? 0 : logins.hashCode());
-		result = prime * result
-				+ ((targetDate == null) ? 0 : targetDate.hashCode());
-		result = prime * result + targetWeight;
+		result = prime
+				* result
+				+ ((registrationDate == null) ? 0 : registrationDate.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		return result;
 	}
 
@@ -177,6 +158,11 @@ public class User{
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
+		if (activatinCode == null) {
+			if (other.activatinCode != null)
+				return false;
+		} else if (!activatinCode.equals(other.activatinCode))
+			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -202,12 +188,12 @@ public class User{
 				return false;
 		} else if (!logins.equals(other.logins))
 			return false;
-		if (targetDate == null) {
-			if (other.targetDate != null)
+		if (registrationDate == null) {
+			if (other.registrationDate != null)
 				return false;
-		} else if (!targetDate.equals(other.targetDate))
+		} else if (!registrationDate.equals(other.registrationDate))
 			return false;
-		if (targetWeight != other.targetWeight)
+		if (state != other.state)
 			return false;
 		return true;
 	}

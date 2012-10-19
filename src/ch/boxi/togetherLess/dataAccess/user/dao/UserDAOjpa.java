@@ -27,7 +27,7 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 
 	@Override
 	public User register(String userName, String password, String firstName,
-			String lastName, String email, int targetWeight, Date targetDate) {
+			String lastName, String email) {
 		Session session = takeTransaction();
 		UserLogin login = new UserLogin(userName, password, null);
 		Set<Login> logins = new TreeSet<>();
@@ -40,10 +40,8 @@ public class UserDAOjpa extends AbstractHibernateDAO implements UserDAO {
 				firstName, 
 				lastName, 
 				email, 
-				targetWeight, 
 				UserState.registered, 
 				new Date(), 
-				targetDate, 
 				logins,
 				activationCode);
 		

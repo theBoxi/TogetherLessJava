@@ -1,7 +1,5 @@
 package ch.boxi.togetherLess.dataAccess;
 
-import java.util.Date;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,7 +25,7 @@ public class UserDAOjpaTest extends AbstractUnitTest {
 	
 	@Test
 	public void testRegisterUser() throws Exception{
-		User user = dao.register("login", "tester11", "Tester", "11", "tester11@bluewin.ch", 80, new Date());
+		User user = dao.register("login", "tester11", "Tester", "11", "tester11@bluewin.ch");
 		User user2 = dao.getUser("login");
 		Assert.assertEquals(user, user2);
 	}

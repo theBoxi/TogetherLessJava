@@ -1,7 +1,6 @@
 package ch.boxi.togetherLess.manager;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -25,9 +24,7 @@ public class UserManager {
 			String password2,
 			String firstName, 
 			String lastName, 
-			String email, 
-			int targetWeight, 
-			Date targetDate){
+			String email){
 		UserDAO userDAO = DaoLocator.getUserDAO();
 		String passwordHash;
 		try {
@@ -38,7 +35,7 @@ public class UserManager {
 			msg.put("en", "Server error");
 			throw new ServerException("1000", msg, e);
 		}
-		User user = userDAO.register(userName, passwordHash, firstName, lastName, email, targetWeight, targetDate);
+		User user = userDAO.register(userName, passwordHash, firstName, lastName, email);
 		sendActivationMail(user);
 		return user;
 	}

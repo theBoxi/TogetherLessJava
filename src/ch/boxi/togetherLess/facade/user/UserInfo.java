@@ -8,7 +8,4 @@ public class UserInfo {
 	public String firstName;
 	public String lastName;
 	public String email;
-	public int targetWeight;
-	//public Date targetDate;
-
 }

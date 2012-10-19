@@ -31,7 +31,7 @@ public class UserDAOinMemory implements UserDAO {
 	}
 	
 	@Override
-	public User register(String userName, String password, String firstName, String lastName, String email, int targetWeight, Date targetDate){
+	public User register(String userName, String password, String firstName, String lastName, String email){
 		if(!isUserNameFree(userName)){
 			throw new UserAllreadyExistsException();
 		}
@@ -47,10 +47,8 @@ public class UserDAOinMemory implements UserDAO {
 				firstName, 
 				lastName, 
 				email, 
-				targetWeight, 
 				UserState.registered, 
 				new Date(), 
-				targetDate, 
 				logins,
 				activationcode); 
 		login.setUser(user);

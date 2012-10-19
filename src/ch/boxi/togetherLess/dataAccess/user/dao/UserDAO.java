@@ -1,7 +1,5 @@
 package ch.boxi.togetherLess.dataAccess.user.dao;
 
-import java.util.Date;
-
 import ch.boxi.togetherLess.dataAccess.user.dto.ActivationCode;
 import ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin;
 import ch.boxi.togetherLess.dataAccess.user.dto.User;
@@ -11,8 +9,7 @@ public interface UserDAO {
 	public abstract User getUser(Integer id);
 
 	public abstract User register(String userName, String password,
-			String firstName, String lastName, String email, int targetWeight,
-			Date targetDate);
+			String firstName, String lastName, String email);
 
 	public abstract User getUser(String userName);
 

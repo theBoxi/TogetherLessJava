@@ -1,9 +1,5 @@
 package ch.boxi.togetherLess.facade.user;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -30,17 +26,13 @@ public class UserFacade {
 			@QueryParam("password2") 	String password2,
 			@QueryParam("firstName") 	String firstName, 
 			@QueryParam("lastName") 	String lastName, 
-			@QueryParam("email") 		String email, 
-			@QueryParam("targetWeight") int targetWeight, 
-			@QueryParam("targetDate")	String targetDate) throws Exception{
+			@QueryParam("email") 		String email) throws Exception{
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		RegisterInfo info = isValidUserParams(userName, password, password2, firstName, lastName, email, targetWeight, targetDate);
+		RegisterInfo info = isValidUserParams(userName, password, password2, firstName, lastName, email);
 		
 		if(!info.hasErrors()){
 			UserManager manager = new UserManager();
-			Date date = sdf.parse(targetDate);
-			User user = manager.register(userName, password, password2, firstName, lastName, email, targetWeight, date);
+			User user = manager.register(userName, password, password2, firstName, lastName, email);
 			info.userID = user.getId();
 			info.registrationOK = true;
 		}
@@ -53,11 +45,8 @@ public class UserFacade {
 			String password2,
 			String firstName, 
 			String lastName, 
-			String email, 
-			int targetWeight, 
-			String targetDate){
+			String email){
 		UserDAO userDAO = DaoLocator.getUserDAO();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		RegisterInfo info = new RegisterInfo();
 		if(StringUtils.isEmpty(password)){
 			info.errors.put("password", false);
@@ -77,19 +66,6 @@ public class UserFacade {
 		if(StringUtils.isEmpty(email)){
 			info.errors.put("email", false);
 		} else{ info.errors.put("email", true);}
-		if(targetWeight == 0){
-			info.errors.put("targetWeight", false);
-		} else{ info.errors.put("targetWeight", true);}
-		if(StringUtils.isEmpty(targetDate)){
-			info.errors.put("targetDate", false);
-		} else{
-			try{
-				sdf.parse(targetDate);
-				info.errors.put("targetDate", true);
-			}catch(ParseException e){
-				info.errors.put("targetDate", false);
-			}
-		}
 		return info;
 	}
 	
@@ -115,7 +91,6 @@ public class UserFacade {
 		info.firstName = user.getFirstName();
 		info.lastName = user.getLastName();
 		info.email = user.getEmail();
-		info.targetWeight = user.getTargetWeight();
 		return info;
 	}
 	
