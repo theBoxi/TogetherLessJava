@@ -1,37 +1,24 @@
 <tgl:include file="../include/header.html"/>
 <script type="text/javascript">
 	function makeCall(){
-		$.ajax({
-		    url: 'http://localhost:8080/rest/user/register',
-		    type: 'get',
-		    data: $('#registerForm').serializeArray(), // or 'ID=1&Name=John&Age=10'
-		    success: function(data) { 
-		    	if(data.registrationOK == "true"){
-		    		document.location="registerDone.html";
-		    	} else{
-		    		for(var i = 0; i < data.errors.entry.length; i++){
-		    			if(data.errors.entry[i].value == "true"){
-		    				$("[name="+data.errors.entry[i].key+"]").attr("class", "");
-		    			} else{
-		    				$("[name="+data.errors.entry[i].key+"]").attr("class", "errorInput");
-		    			}
-		    		}
-		    	}
-		    },
-		    error: function(data) { 
-		    	alert('PUT failed\nStatusText:\t ' + data.statusText + '\nresponse:\t ' + data.responseText); 
-		    }
-		});
+		var api = new RegisterAPI();
+		api.register(
+				$('#firstName'),
+				$('#lastName'),
+				$('#userName'),
+				$('#password'),
+				$('#password2'),
+				$('#email'));
 	}
 </script>
 <form id="registerForm">
 	<h1><img src="../images/logo.png" border="0"/>&nbsp;Register</h1>
-	<input name="firstName"		type="text" 	placeholder="* Vorname"/><br/>
-	<input name="lastName" 		type="text" 	placeholder="* Nachname"/><br/>
-	<input name="userName" 		type="text" 	placeholder="* UserName"/><br/>
-	<input name="password" 		type="password" placeholder="* Passwort"/><br/>
-	<input name="password2" 	type="password" placeholder="* Passwort-wiederholung"/><br/>
-	<input name="email" 		type="email" 	placeholder="* your@email"/><br/>
+	<input name="firstName"		id="firstName"	type="text" 	placeholder="* Vorname"/><br/>
+	<input name="lastName" 		id="lastName"	type="text" 	placeholder="* Nachname"/><br/>
+	<input name="userName" 		id="userName"	type="text" 	placeholder="* UserName"/><br/>
+	<input name="password" 		id="password"	type="password" placeholder="* Passwort"/><br/>
+	<input name="password2" 	id="password2"	type="password" placeholder="* Passwort-wiederholung"/><br/>
+	<input name="email" 		id="email"		type="email" 	placeholder="* your@email"/><br/>
 	<input 						type="button" 	value="registrieren" onclick="makeCall()"/>
 </form>
 <tgl:include file="../include/footer.html"/>

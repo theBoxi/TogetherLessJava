@@ -1,20 +1,9 @@
 <tgl:include file="../include/header.html"/>
 	<script type="text/javascript">
 		function makeCall(){
-			$.ajax({
-			    url: 'http://localhost:8080/rest/user/activate',
-			    type: 'get',
-			    data: 'activationCode='+$.getURLParam("activationCode"),
-			    success: function(data) { 
-			    	$("#activationDone").attr("style", "display: block;");
-			    },
-			    error: function(data) { 
-			    	if(data.status == 461){
-			    		$("#alreadyActivated").attr("style", "display: block;");
-			    	}
-			    	$("#activationFailed").attr("style", "display: block;");
-			    }
-			});
+			var api = new RegisterAPI();
+			var retValue = api.activate($.getURLParam("activationCode"))
+			$("#" + retValue).attr("style", "display: block;");
 		}
 		
 		$(document).ready(function() {
