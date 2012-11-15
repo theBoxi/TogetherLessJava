@@ -27,23 +27,21 @@ function RegisterAPI(){
 	}
 	
 	this.activate = function(activationCode){
-		this.retValue = "activationFailed"; // default failer
-		var test = $.ajax({
+		var result = $.ajax({
 		    url: this.host + '/rest/user/activate',
 		    type: 'get',
 		    data: 'activationCode=' + activationCode,
-		    async: false,
-		    success: function(data) { 
-		    	this.retValue = "#activationDone";
-		    },
-		    error: function(data) { 
-		    	if(data.status == 461){
-		    		this.retvalue = "alreadyActivated";
-		    	} else{
-		    		this.retValue = "activationFailed";
-		    	}
-		    }
+		    async: false
 		});
-		return this.retValue;
+		
+		if(199 < result.status && result.status < 300){
+			return "activationDone";
+		}else{
+			if(result.status == 461){
+				return "alreadyActivated";
+	    	} else{
+	    		return "activationFailed";
+	    	}
+		}
 	}
 }
