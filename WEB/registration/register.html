@@ -2,13 +2,24 @@
 <script type="text/javascript">
 	function makeCall(){
 		var api = new RegisterAPI();
-		api.register(
-				$('#firstName'),
-				$('#lastName'),
-				$('#userName'),
-				$('#password'),
-				$('#password2'),
-				$('#email'));
+		var retValue = api.register(
+				$('#firstName').attr("value"),
+				$('#lastName').attr("value"),
+				$('#userName').attr("value"),
+				$('#password').attr("value"),
+				$('#password2').attr("value"),
+				$('#email').attr("value"));
+		if(retValue == true){
+			document.location="registerDone.html";
+		} else{
+			for(var i = 0; i < retValue.length; i++){
+				if(retValue[i].value == "true"){
+					$("[name="+retValue[i].key+"]").attr("class", "");
+				} else{
+					$("[name="+retValue[i].key+"]").attr("class", "errorInput");
+				}
+			}
+		}
 	}
 </script>
 <form id="registerForm">
