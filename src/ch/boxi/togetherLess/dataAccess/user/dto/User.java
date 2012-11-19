@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ch.boxi.togetherLess.dataAccess.weightMeasurement.dto.WeightMeasurement;
+
 @Entity
 @Table(name="appuser")
 public class User{
@@ -35,6 +37,9 @@ public class User{
 	
 	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private Set<Login> logins = new TreeSet<>();
+	
+	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
+	private Set<WeightMeasurement> weightMeasurements;
 	
 	@OneToOne(optional=true, mappedBy="user", fetch=FetchType.EAGER)
 	private ActivationCode activatinCode;
