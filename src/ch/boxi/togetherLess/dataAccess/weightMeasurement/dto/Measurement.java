@@ -16,7 +16,7 @@ import ch.boxi.togetherLess.dataAccess.user.dto.User;
 
 @Entity
 @Table(name="weightMeasurement")
-public class WeightMeasurement {
+public class Measurement implements Comparable<Measurement> {
 	@Id
 	@GeneratedValue
 	private Integer id;
@@ -26,18 +26,18 @@ public class WeightMeasurement {
 	private User user;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column private Date measurementDate;
+	@Column private Date recordingDate;
 	
 	@Column private int grams;
 	
-	public WeightMeasurement(){
+	public Measurement(){
 		super();
 	}
 
-	public WeightMeasurement(Integer id, Date measurementDate, int grams, User user) {
+	public Measurement(Integer id, Date recordingDate, int grams, User user) {
 		this();
 		this.id = id;
-		this.measurementDate = measurementDate;
+		this.recordingDate = recordingDate;
 		this.grams = grams;
 		this.user = user;
 	}
@@ -46,12 +46,12 @@ public class WeightMeasurement {
 		return id;
 	}
 
-	public Date getMeasurementDate() {
-		return measurementDate;
+	public Date getRecordingDate() {
+		return recordingDate;
 	}
 
-	public void setMeasurementDate(Date measurementDate) {
-		this.measurementDate = measurementDate;
+	public void setRecordingDate(Date measurementDate) {
+		this.recordingDate = measurementDate;
 	}
 
 	public int getGrams() {
@@ -68,6 +68,11 @@ public class WeightMeasurement {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	@Override
+	public int compareTo(Measurement o) {
+		return recordingDate.compareTo(o.getRecordingDate());
 	}
 		
 }

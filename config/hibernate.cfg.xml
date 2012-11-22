@@ -39,7 +39,7 @@
     <mapping class="ch.boxi.togetherLess.dataAccess.user.dto.Login"/>
     <mapping class="ch.boxi.togetherLess.dataAccess.user.dto.UserLogin"/>
     <mapping class="ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin"/>
-    <mapping class="ch.boxi.togetherLess.dataAccess.weightMeasurement.dto.WeightMeasurement"/>
+    <mapping class="ch.boxi.togetherLess.dataAccess.weightMeasurement.dto.Measurement"/>
     
 </session-factory>
 </hibernate-configuration>

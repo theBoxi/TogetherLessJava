@@ -3,8 +3,10 @@
 		<title>TogetherLess - Login</title>
 	</head>
 	
-	<body onload="makeCall()">
+	<!-- <body onload="makeCall()"> -->
+	<body>
 		<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="measurement.js"></script>
 		<script type="text/javascript">
 			function makeCall(){
 				$.ajax({
@@ -20,10 +22,18 @@
 				    }
 				});
 			}
+			
+			function logWeight(){
+				var api = new MeasurementAPI();
+				api.logWeight($('#grams').attr("value"), "");
+			}
 		</script>
 		<form id="registerForm">
 			<h1>Login</h1>
 			<div id="userinfo" />
+		</form>
+		<form id="logWeightForm" action="/rest/measurement/logWeight" method="get">
+			<input type="text" placeholder="gewicht zb: 80.5" name="grams" id="grams"/><input type="button" onclick="logWeight();" value="Log"/>
 		</form>
 	</body>
 </html>

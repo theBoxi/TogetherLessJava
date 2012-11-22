@@ -2,6 +2,7 @@ package ch.boxi.togetherLess.dataAccess.user.dto;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.persistence.Column;
@@ -17,7 +18,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import ch.boxi.togetherLess.dataAccess.weightMeasurement.dto.WeightMeasurement;
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.SortType;
+
+import ch.boxi.togetherLess.dataAccess.weightMeasurement.dto.Measurement;
 
 @Entity
 @Table(name="appuser")
@@ -39,7 +43,8 @@ public class User{
 	private Set<Login> logins = new TreeSet<>();
 	
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
-	private Set<WeightMeasurement> weightMeasurements;
+	@Sort(type = SortType.NATURAL)
+	private SortedSet<Measurement> measurements = new TreeSet<>();
 	
 	@OneToOne(optional=true, mappedBy="user", fetch=FetchType.EAGER)
 	private ActivationCode activatinCode;
@@ -134,6 +139,14 @@ public class User{
 		this.activatinCode = activatinCode;
 	}
 
+	public SortedSet<Measurement> getMeasurements() {
+		return measurements;
+	}
+
+	public void setMeasurements(SortedSet<Measurement> measurements) {
+		this.measurements = measurements;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -152,6 +165,10 @@ public class User{
 				+ ((registrationDate == null) ? 0 : registrationDate.hashCode());
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		return result;
+	}
+	
+	public String toString(){
+		return id + ":" + getUserLogin().getUsername();
 	}
 
 	@Override

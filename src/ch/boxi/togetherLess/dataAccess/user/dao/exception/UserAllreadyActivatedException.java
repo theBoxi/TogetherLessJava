@@ -1,7 +1,7 @@
 package ch.boxi.togetherLess.dataAccess.user.dao.exception;
 
-import ch.boxi.togetherLess.dataAccess.exception.LanguageDependentText;
-import ch.boxi.togetherLess.dataAccess.exception.TogetherLessException;
+import ch.boxi.togetherLess.exception.LanguageDependentText;
+import ch.boxi.togetherLess.exception.TogetherLessException;
 
 public class UserAllreadyActivatedException extends TogetherLessException {
 	private static final long serialVersionUID = 1L;

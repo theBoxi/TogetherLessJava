@@ -1,4 +1,4 @@
-package ch.boxi.togetherLess.dataAccess.exception;
+package ch.boxi.togetherLess.exception;
 
 import java.util.Map;
 import java.util.TreeMap;

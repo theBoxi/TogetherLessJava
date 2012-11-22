@@ -1,4 +1,4 @@
-package ch.boxi.togetherLess.dataAccess.exception;
+package ch.boxi.togetherLess.exception;
 
 import java.util.TreeMap;
 import java.util.Map.Entry;
@@ -19,5 +19,10 @@ public class LanguageDependentText extends TreeMap<String, String>{
 		sb.deleteCharAt(sb.length()-1);
 		sb.append("]");
 		return sb.toString();
+	}
+	
+	public LanguageDependentText add(String lang, String msg){
+		put(lang, msg);
+		return this;
 	}
 }

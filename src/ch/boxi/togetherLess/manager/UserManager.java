@@ -5,17 +5,20 @@ import java.util.Properties;
 import java.util.UUID;
 
 import ch.boxi.togetherLess.dataAccess.DaoLocator;
-import ch.boxi.togetherLess.dataAccess.exception.LanguageDependentText;
 import ch.boxi.togetherLess.dataAccess.user.dao.PasswordUtility;
 import ch.boxi.togetherLess.dataAccess.user.dao.UserDAO;
 import ch.boxi.togetherLess.dataAccess.user.dao.exception.UserDoesNotExistException;
 import ch.boxi.togetherLess.dataAccess.user.dao.exception.UserIsNotActivatedException;
 import ch.boxi.togetherLess.dataAccess.user.dto.ActivationCode;
 import ch.boxi.togetherLess.dataAccess.user.dto.CookieLogin;
+import ch.boxi.togetherLess.dataAccess.user.dto.Login;
+import ch.boxi.togetherLess.dataAccess.user.dto.LoginType;
 import ch.boxi.togetherLess.dataAccess.user.dto.User;
+import ch.boxi.togetherLess.dataAccess.user.dto.UserLogin;
 import ch.boxi.togetherLess.dataAccess.user.dto.UserState;
 import ch.boxi.togetherLess.emailService.EmailServiceConsoleImpl;
 import ch.boxi.togetherLess.emailService.Emailtemplate;
+import ch.boxi.togetherLess.exception.LanguageDependentText;
 
 public class UserManager {
 	
@@ -79,6 +82,19 @@ public class UserManager {
 	public void activateUser(String activationCode){
 		UserDAO userDAO = DaoLocator.getUserDAO();
 		userDAO.activateUser(activationCode);
+	}
+	
+	
+	public User loadUser(Login login){
+		if(LoginType.CookieLogin == login.getLoginType()){
+			return loadUser((CookieLogin)login);
+		} else if(LoginType.UserLogin == login.getLoginType()){
+			UserLogin userLogin = (UserLogin)login;
+			CookieLogin cookieLogin = login(userLogin.getUsername(), userLogin.getPassword());
+			return loadUser(cookieLogin);
+		} else{
+			return null;
+		}
 	}
 	
 	

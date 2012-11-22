@@ -1,7 +1,7 @@
 package ch.boxi.togetherLess.manager;
 
-import ch.boxi.togetherLess.dataAccess.exception.LanguageDependentText;
-import ch.boxi.togetherLess.dataAccess.exception.TogetherLessException;
+import ch.boxi.togetherLess.exception.LanguageDependentText;
+import ch.boxi.togetherLess.exception.TogetherLessException;
 
 public class ServerException extends TogetherLessException {
 	private static final long serialVersionUID = 7450203192586145908L;

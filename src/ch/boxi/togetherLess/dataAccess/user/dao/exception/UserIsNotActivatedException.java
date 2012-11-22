@@ -3,8 +3,8 @@ package ch.boxi.togetherLess.dataAccess.user.dao.exception;
 import java.util.Map;
 import java.util.TreeMap;
 
-import ch.boxi.togetherLess.dataAccess.exception.LanguageDependentText;
-import ch.boxi.togetherLess.dataAccess.exception.TogetherLessException;
+import ch.boxi.togetherLess.exception.LanguageDependentText;
+import ch.boxi.togetherLess.exception.TogetherLessException;
 
 public class UserIsNotActivatedException extends TogetherLessException {
 	private static final long serialVersionUID = 126573109559222302L;
