@@ -1,6 +1,14 @@
 package ch.boxi.togetherLess.server;
 
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.servlet.DispatcherType;
+
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
@@ -27,6 +35,9 @@ public class TogetherLessServer {
         servletHolder.setInitParameter("com.sun.jersey.spi.container.ContainerResponseFilters", "com.sun.jersey.api.container.filter.LoggingFilter");
        
 		context.addServlet(servletHolder, "/rest/*");
+		
+		FilterHolder filterHolder = new FilterHolder(new JpaColserFilter());
+		context.addFilter(filterHolder, "/rest/*", null);
  
         server.start();
         server.join();

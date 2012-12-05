@@ -7,8 +7,9 @@ import org.hibernate.Transaction;
 
 public abstract class AbstractHibernateDAO {
 	protected Session takeTransaction() {
-		SessionFactory session = HibernateUtil.getSessionFactory();
-		Session sess = session.getCurrentSession();
+		
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session sess = sessionFactory.getCurrentSession();
 		Transaction tx = sess.getTransaction();
 		sess.setFlushMode(FlushMode.AUTO);
 		if (!tx.isActive()) {
@@ -18,10 +19,16 @@ public abstract class AbstractHibernateDAO {
 	}
 
 	protected Session createNewTransaction() {
-		SessionFactory session = HibernateUtil.getSessionFactory();
-		Session sess = session.getCurrentSession();
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session sess = sessionFactory.getCurrentSession();
 		sess.setFlushMode(FlushMode.AUTO);
 		sess.beginTransaction();
 		return sess;
+	}
+	
+	protected void closeTransaction(){
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session sess = sessionFactory.getCurrentSession();
+		sess.close();
 	}
 }
