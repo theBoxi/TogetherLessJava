@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -103,6 +105,7 @@ public class HtmlIncluder {
 					File fileToInclude = new File(path.subpath(0, path.getNameCount()-1).toString() + File.separator + relativFileToInclude);
 					convertFile(fileToInclude);
 					String includedLine = readFileInLine(fileToInclude);
+					includedLine = escapeReplacementString(includedLine);
 					line = matcher.replaceAll(includedLine);
 				}
 				out.println(line);
@@ -114,6 +117,8 @@ public class HtmlIncluder {
 		} catch (FileNotFoundException e) {
 			System.err.println("failed to convert File: " + file + " because of: " + e.getMessage());
 		} catch (IOException e) {
+			System.err.println("failed to convert File: " + file + " because of: " + e.getMessage());
+		} catch (IllegalArgumentException e) {
 			System.err.println("failed to convert File: " + file + " because of: " + e.getMessage());
 		} finally{
 			if(in != null){
@@ -127,6 +132,47 @@ public class HtmlIncluder {
 				out.close();
 			}
 		}
+	}
+	
+	private static String escapeReplacementString(String replacementString){
+		BufferedReader in = null;
+		PrintWriter out = null;
+		StringWriter stringWriter = new StringWriter();
+		try {
+			in = new BufferedReader(new StringReader(replacementString));
+			out = new PrintWriter(stringWriter);
+			while(in.ready()){
+				String line = in.readLine();
+				if(line != null){
+					line = line.replace("\\", "\\\\");
+					line = line.replace("$", "\\$");
+					out.println(line);
+				} else{
+					break;
+				}
+			}
+			replacementString = stringWriter.getBuffer().toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally{
+			if(in != null){
+				try {
+					in.close();
+				} catch (IOException e) {
+					System.err.println("failed to escape replacement String: " + e.getMessage());
+				}
+			}
+			if(out != null){
+				out.close();
+			}
+			try {
+				stringWriter.close();
+			} catch (IOException e) {
+				System.err.println("failed to escape replacement String: " + e.getMessage());
+			}
+		}
+		return replacementString;
 	}
 	
 	private static String readFileInLine(File file){
