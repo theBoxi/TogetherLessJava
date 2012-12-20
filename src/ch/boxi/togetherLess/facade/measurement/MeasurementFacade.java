@@ -1,7 +1,8 @@
 package ch.boxi.togetherLess.facade.measurement;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
@@ -40,14 +41,17 @@ public class MeasurementFacade {
 	@GET
 	@Path("actualMonth")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Measurement[] loadMeasurementsOfActualMonth(@CookieParam("sessionID") String sessionID){
-		ArrayList<Measurement> measurements = new ArrayList<>();
+	public loadMeasurementsResponse loadMeasurementsOfActualMonth(@CookieParam("sessionID") String sessionID){
 		UserManager userManager = new UserManager();
 		CookieLogin cookieLogin = new CookieLogin(sessionID, null);
 		User user = userManager.loadUser(cookieLogin);
 		Interval interval = DateHelper.getActualMonth();
-		new MeasurementManager().loadMeasurements(cookieLogin, user, interval.getStart().toDate(), interval.getEnd().toDate());
-		measurements.addAll(user.getMeasurements());
-		return measurements.toArray(new Measurement[measurements.size()]);
+		Set<Measurement> loadMeasurements = new MeasurementManager().loadMeasurements(cookieLogin, user, interval.getStart().toDate(), interval.getEnd().toDate());
+		Set<MeasurementDTO> retLogs = new TreeSet<>();
+		for(Measurement m: loadMeasurements){
+			retLogs.add(new MeasurementDTO(m));
+		}
+		loadMeasurementsResponse response = new loadMeasurementsResponse(retLogs);
+		return response;
 	}
 }

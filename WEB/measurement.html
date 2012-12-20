@@ -1,0 +1,35 @@
+<tgl:include file="include/headerApp.html"/>
+<script type="text/javascript" src="/resource/weightLog/measurementApi.js"></script>
+<script type="text/javascript" src="/resource/weightLog/weightLogModel.js"></script>
+<script type="text/javascript" src="/resource/weightLog/weightLogView.js"></script>
+<script type="text/javascript" src="/resource/eventHandler.js"></script>
+<script type="text/javascript">
+	$("#logWeight").keyup(function(event){
+		logWeight(event);
+	});
+	
+	$("#logDate").keyup(function(event){
+		logWeight(event);
+	});
+	
+	$(document).ready(function() {
+		var api = new MeasurementAPI();
+		var resp = api.getLogs(12);
+		var model = new WeightLogListModel(resp.logs);
+		var view = new WeightLogView(model, $("#logs"));
+		view.printList();
+	});
+	
+	function logWeight(event){
+		if(event.keyCode == 13){
+			var api = new MeasurementAPI();
+			api.logWeight($('logWeight').attr("value")*1000, $('logDate').attr("value"));
+	    }
+	}
+</script>
+<div>
+	<input id="logWeight" type="number" placeholder="Aktuelles Gewicht eintragen [kg]"/>
+	<input id="logDate" type="datetime" placeholder="Datum"/>
+</div>
+<ul id="logs"></ul>
+<tgl:include file="include/footer.html"/>

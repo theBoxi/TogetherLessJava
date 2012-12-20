@@ -1,39 +1,12 @@
-<html>
-	<head>
-		<title>TogetherLess - Login</title>
-	</head>
-	
-	<!-- <body onload="makeCall()"> -->
-	<body>
-		<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
-		<script type="text/javascript" src="measurement.js"></script>
-		<script type="text/javascript">
-			function makeCall(){
-				$.ajax({
-				    url: 'http://localhost:8080/rest/user/get',
-				    type: 'get',
-				    //data: $('#registerForm').serializeArray(), // or 'ID=1&Name=John&Age=10'
-				    success: function(user) {
-				    	$('#registerForm').text("user: " + user.firstName + " " + user.lastName);
-				    	alert('PUT completed\nStatusText:\t ' + data.statusText + '\nresponse:\t ' + data.responseText);
-				    },
-				    error: function(data) { 
-				    	alert('PUT failed\nStatusText:\t ' + data.statusText + '\nresponse:\t ' + data.responseText); 
-				    }
-				});
-			}
-			
-			function logWeight(){
-				var api = new MeasurementAPI();
-				api.logWeight($('#grams').attr("value"), "");
-			}
-		</script>
-		<form id="registerForm">
-			<h1>Login</h1>
-			<div id="userinfo" />
-		</form>
-		<form id="logWeightForm" action="/rest/measurement/logWeight" method="get">
-			<input type="text" placeholder="gewicht zb: 80.5" name="grams" id="grams"/><input type="button" onclick="logWeight();" value="Log"/>
-		</form>
-	</body>
-</html>
+<tgl:include file="include/headerApp.html"/>
+<script type="text/javascript">
+$(document).ready(function() {
+	setTitle("TogetherLess");
+});
+</script>
+<ul>
+	<li><a href="measurement.html">Gewicht</a></li>
+	<li>Gruppen</li>
+	<li>Logout</li>
+</ul>
+<tgl:include file="include/footer.html"/>

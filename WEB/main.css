@@ -1,14 +1,67 @@
+body{
+	padding: 0px;
+	margin: 0px;
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+}
+
+nav{
+	height:					3em;
+	background-color:		#99CC00;
+	border-style:			solid;
+	border-color:			#669900;
+	border-width:			0px;
+	border-bottom-width:	0.1em;
+}
+
+#navLogo{
+	margin:			0.5em;
+	height: 		2em;
+}
+
+#navTitle{
+	vertical-align: middle;
+	margin: 0em;
+	padding: 0px;
+	padding-right: 1em;
+	font-size: 2em;
+	float: right;
+}
+
+#navigation{
+	margin: 0px;
+	float: right;
+}
+
+#navigation li{
+	display: inline-block;
+}
+
 .errorInput{
 	border-color:	#FF0000; 
 	border-style:	solid; 
-	border-width:	1px;
+	border-width:	0.1em;
 	color:			#FF0000;
 }
 
 .errmsg{
 	border-color:	#BB0000; 
 	border-style:	solid; 
-	border-width:	1px;
+	border-width:	0.1em;
 	color:			#BB0000;
 	background-color: rgba(187,0,0,0.2);
+}
+
+
+/***********************************************/
+/*                   Content                   */
+/***********************************************/
+
+input{
+	/* 0.5em from Margin, 4px from padding */
+	width: -moz-calc(100% - 0.5em - 4px);
+	width: -webkit-calc(100% - 0.5em - 4px);
+	width: -o-calc(100% - 0.5em - 4px);
+	width: calc(100% - 0.5em - 4px);
+	height: 2em;
+	margin: 0.25em;
 }

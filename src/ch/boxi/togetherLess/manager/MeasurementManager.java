@@ -1,6 +1,7 @@
 package ch.boxi.togetherLess.manager;
 
 import java.util.Date;
+import java.util.Set;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
@@ -24,17 +25,17 @@ public class MeasurementManager {
 	}
 	
 	
-	public void loadMeasurements(Login login, User forUser, Date from, Date to){
-		User requestingUser = new UserManager().loadUser(login);
-		if(requestingUser.equals(forUser)){
-			logger.fatal("forbidden access to measurementData from account: " + requestingUser + " tryed to load data from account: " + forUser);
-			throw new TogetherLessException("9999", 
-					new LanguageDependentText()
-			.add("de", "Zugriff auf Daten von User: " + forUser + " verweigert!")
-			.add("en", "Access to data from user " + forUser + " denied!"));
-		}
+	public Set<Measurement> loadMeasurements(Login login, User forUser, Date from, Date to){
+//		User requestingUser = new UserManager().loadUser(login);
+//		if(!requestingUser.equals(forUser)){
+//			logger.fatal("forbidden access to measurementData from account: " + requestingUser + " tryed to load data from account: " + forUser);
+//			throw new TogetherLessException("9999", 
+//					new LanguageDependentText()
+//			.add("de", "Zugriff auf Daten von User: " + forUser + " verweigert!")
+//			.add("en", "Access to data from user " + forUser + " denied!"));
+//		}
 		SortedSet<Measurement> measurements = DaoLocator.getMeasurementDAO().readMeasurements(from, to, forUser);
-		forUser.getMeasurements().addAll(measurements);
+		return measurements;
 	}
 	
 	

@@ -42,7 +42,7 @@ public class User{
 	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private Set<Login> logins = new TreeSet<>();
 	
-	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	@Sort(type = SortType.NATURAL)
 	private SortedSet<Measurement> measurements = new TreeSet<>();
 	

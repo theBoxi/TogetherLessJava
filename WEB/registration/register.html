@@ -1,5 +1,9 @@
 <tgl:include file="../include/header.html"/>
 <script type="text/javascript">
+	$(document).ready(function(){
+		setTitle("Registrierung");
+	});
+
 	function makeCall(){
 		var api = new RegisterAPI();
 		var retValue = api.register(
@@ -23,13 +27,12 @@
 	}
 </script>
 <form id="registerForm">
-	<h1><img src="../images/logo.png" border="0"/>&nbsp;Register</h1>
-	<input name="firstName"		id="firstName"	type="text" 	placeholder="* Vorname"/><br/>
-	<input name="lastName" 		id="lastName"	type="text" 	placeholder="* Nachname"/><br/>
-	<input name="userName" 		id="userName"	type="text" 	placeholder="* UserName"/><br/>
-	<input name="password" 		id="password"	type="password" placeholder="* Passwort"/><br/>
-	<input name="password2" 	id="password2"	type="password" placeholder="* Passwort-wiederholung"/><br/>
-	<input name="email" 		id="email"		type="email" 	placeholder="* your@email"/><br/>
+	<input name="firstName"		id="firstName"	type="text" 	placeholder="* Vorname"/>
+	<input name="lastName" 		id="lastName"	type="text" 	placeholder="* Nachname"/>
+	<input name="userName" 		id="userName"	type="text" 	placeholder="* UserName"/>
+	<input name="password" 		id="password"	type="password" placeholder="* Passwort"/>
+	<input name="password2" 	id="password2"	type="password" placeholder="* Passwort-wiederholung"/>
+	<input name="email" 		id="email"		type="email" 	placeholder="* your@email"/>
 	<input 						type="button" 	value="registrieren" onclick="makeCall()"/>
 </form>
 <tgl:include file="../include/footer.html"/>
