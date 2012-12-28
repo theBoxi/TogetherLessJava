@@ -1,11 +1,10 @@
 package ch.boxi.togetherLess.server;
 
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.servlet.DispatcherType;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -16,7 +15,9 @@ import com.sun.jersey.spi.container.servlet.ServletContainer;
 
 public class TogetherLessServer {
 	public static void main(String[] args) throws Exception{
-		Server server = new Server(8080);
+		Properties config = readConfig();
+		int port = Integer.parseInt(config.getProperty("tgl.port"));
+		Server server = new Server(port);
 		 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
@@ -41,5 +42,11 @@ public class TogetherLessServer {
  
         server.start();
         server.join();
+	}
+	
+	public static Properties readConfig() throws FileNotFoundException, IOException{
+		Properties config = new Properties();
+		config.load(new FileReader("config/togetherLess.properties"));
+		return config;
 	}
 }
