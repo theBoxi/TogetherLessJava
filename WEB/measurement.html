@@ -2,6 +2,7 @@
 <script type="text/javascript" src="/resource/weightLog/measurementApi.js"></script>
 <script type="text/javascript" src="/resource/weightLog/weightLogModel.js"></script>
 <script type="text/javascript" src="/resource/weightLog/weightLogView.js"></script>
+<script type="text/javascript" src="/resource/weightLog/weightLogController.js"></script>
 <script type="text/javascript" src="/resource/eventHandler.js"></script>
 <script type="text/javascript">
 	$("#logWeight").keyup(function(event){
@@ -13,11 +14,10 @@
 	});
 	
 	$(document).ready(function() {
-		var api = new MeasurementAPI();
-		var resp = api.getLogs(12);
-		var model = new WeightLogListModel(resp.logs);
-		var view = new WeightLogView(model, $("#logs"));
-		view.printList();
+		var model = new WeightLogListModel();
+		var view = new WeightLogView(model, $("#logs"), $('#logWeight'), $("#addButton"));
+		var controller = new WeightLogController(model, view);
+		controller.init();
 	});
 	
 	function logWeight(event){
@@ -29,7 +29,7 @@
 </script>
 <div>
 	<input id="logWeight" type="number" placeholder="Aktuelles Gewicht eintragen [kg]"/>
-	<input id="logDate" type="datetime" placeholder="Datum"/>
+	<input id="addButton" type="button" value="Los"/>
 </div>
-<ul id="logs"></ul>
+<ol id="logs"></ol>
 <tgl:include file="include/footer.html"/>

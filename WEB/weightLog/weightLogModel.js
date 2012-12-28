@@ -21,8 +21,13 @@ function WeightLogListModel(weightLogs){
 	}
 	
 	this.addLog = function(weightLog){
-		this._weightLogs.push(item);
+		this._weightLogs.push(weightLog);
 		this.logAddedEvent.notify({weightLog : weightLog});
+	}
+	
+	this.setLogs = function(weightLogs){
+		this._weightLogs = weightLogs;
+		this.logAddedEvent.notify({weightLogs : weightLogs});
 	}
 	
 	this.removeSelected = function(){

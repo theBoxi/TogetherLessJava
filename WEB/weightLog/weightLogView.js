@@ -1,8 +1,16 @@
-function WeightLogView(model, listElement){
+function WeightLogView(model, listElement, weightInputField, addButton){
 	this._model = model;
 	this._listElement = listElement;
+	this._weightInputField = weightInputField;
+	this._addButton = addButton;
+	
+	this.addButtonClickedEvent = new EventHandler(this);
 	
 	var _this = this;
+	
+	this._addButton.click(function () {
+        _this.addButtonClickedEvent.notify(_this._weightInputField.attr("value")*1000);
+    });
 	
 	this._model.logAddedEvent.attach(function(){
 		_this.printList();
@@ -21,7 +29,7 @@ function WeightLogView(model, listElement){
 		var logs = this._model.getLogs();
 		for(i in logs){
 			if(logs[i].hasOwnProperty("grams")){
-				this._listElement.append($("<ul>" + logs[i].grams/1000 + ", " + logs[i].recordingDate + "</ul>"));
+				this._listElement.append($("<li>" + logs[i].grams/1000 + ", " + logs[i].recordingDate + "</li>"));
 			}
 		}
 		this._model.setSelectedIndex(-1);
