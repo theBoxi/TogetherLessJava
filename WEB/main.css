@@ -57,11 +57,28 @@ nav{
 /***********************************************/
 
 input{
-	/* 0.5em from Margin, 4px from padding */
-	width: -moz-calc(100% - 0.5em - 4px);
-	width: -webkit-calc(100% - 0.5em - 4px);
-	width: -o-calc(100% - 0.5em - 4px);
-	width: calc(100% - 0.5em - 4px);
-	height: 2em;
-	margin: 0.25em;
+	/* 6px from Margin, 8px from padding, 4px from border */
+	width: -moz-calc(100% - 6px - 8px - 4px);
+	width: -webkit-calc(100% - 6px - 8px - 4px);
+	width: -o-calc(100% - 6px - 8px - 4px);
+	width: calc(100% - 6px - 8px - 4px);
+	margin: 3px;
+	padding: 4px;
+}
+
+/************************/
+/*     logWeight        */
+/************************/
+#addButton{
+	width:	45px;
+}
+
+#logWeight{
+	/* 6px from Margin, 8px from padding, 4px from border */
+	width: -moz-calc(100% - 6px - 8px - 4px - 51px);
+	width: -webkit-calc(100% - 6px - 8px - 4px - 51px);
+	width: -o-calc(100% - 6px - 8px - 4px - 51px);
+	width: calc(100% - 6px - 8px - 4px - 51px);
+	margin: 3px;
+	padding: 4px;
 }
