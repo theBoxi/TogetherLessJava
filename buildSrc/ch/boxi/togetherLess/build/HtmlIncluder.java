@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,11 +27,20 @@ import org.apache.commons.cli.PosixParser;
 public class HtmlIncluder {
 	private static boolean verbose = false;
 	private static Set<File> convertedFiles = new HashSet<>();
+	private static Properties properties = new Properties();
+	private static Set<String> fileEndingsToConvert = new HashSet<>();
 	
-	public static void main(String[] args) {
+	static{
+		fileEndingsToConvert.add("html");
+		fileEndingsToConvert.add("htm");
+		fileEndingsToConvert.add("js");
+	}
+	
+	public static void main(String[] args) throws FileNotFoundException, IOException {
 		Options options = new Options();
 		options.addOption("f", true, "file to Convert");
 		options.addOption("d", true, "directory to convert all files in it");
+		options.addOption("p", true, "propertyFile");
 		options.addOption("v", false, "varbose");
 		
 		HelpFormatter formatter = new HelpFormatter();
@@ -58,6 +68,21 @@ public class HtmlIncluder {
 			System.exit(-1);
 			return;
 		}
+		
+		String fileName = "";
+		if(params.hasOption("p")){
+			fileName = params.getOptionValue("p");
+		}else{
+			fileName = "config/togetherLess.properties";
+		}
+		File file = new File(fileName);
+		if(!file.exists() || !file.canRead()){
+			System.err.println("file " + fileName + " doesn't exists or is not readable");
+			System.err.println("current Dir is " + new File("./").getAbsolutePath());
+			formatter.printHelp("HtmlIncluder", options );
+			System.exit(-1);
+		}
+		properties.load(new FileReader(fileName));
 		checkFileOrDir(root);
 	}
 	
@@ -67,15 +92,16 @@ public class HtmlIncluder {
 				checkFileOrDir(subFile);
 			}
 		} else{
-			if(isHtmlToConvert(file)){
+			if(isFileToConvert(file)){
 				convertFile(file);
 			}
 		}
 	}
 	
-	private static boolean isHtmlToConvert(File file){
+	static boolean isFileToConvert(File file){
 		String fileName = file.toString();
-		return fileName.endsWith(".html") || fileName.endsWith(".htm");
+		String fileNameEnd = fileName.substring(fileName.lastIndexOf(".")+1);
+		return fileEndingsToConvert.contains(fileNameEnd);
 	}
 	
 	private static void convertFile(File file){
@@ -88,7 +114,8 @@ public class HtmlIncluder {
 		PrintWriter out = null;
 		
 		// <tgl:include file="./header.html"/>
-		Pattern pattern = Pattern.compile("<tgl:include\\s+file=\"([0-9a-zA-Z\\./-_]+)\"\\s*/>");
+		Pattern includePattern  = Pattern.compile("<tgl:include\\s+file=\"([0-9a-zA-Z\\./-_]+)\"\\s*/>");
+		PropertyReplaycer propertyReplaycer = new PropertyReplaycer(properties, verbose);
 		
 		try {
 			File tmpFile = File.createTempFile(file.getName(), ".tmp");
@@ -97,17 +124,18 @@ public class HtmlIncluder {
 			while(in.ready()){
 				String line = in.readLine();
 				
-				Matcher matcher = pattern.matcher(line);
-				if(matcher.find()){
-					String relativFileToInclude = matcher.group(1);
+				Matcher includeMatcher = includePattern.matcher(line);
+				if(includeMatcher.find()){
+					String relativFileToInclude = includeMatcher.group(1);
 					log("found file to include: " + relativFileToInclude);
 					Path path = file.toPath();
 					File fileToInclude = new File(path.subpath(0, path.getNameCount()-1).toString() + File.separator + relativFileToInclude);
 					convertFile(fileToInclude);
 					String includedLine = readFileInLine(fileToInclude);
 					includedLine = escapeReplacementString(includedLine);
-					line = matcher.replaceAll(includedLine);
+					line = includeMatcher.replaceAll(includedLine);
 				}
+				line = propertyReplaycer.replayceAllProperties(line);
 				out.println(line);
 			}
 			in.close();

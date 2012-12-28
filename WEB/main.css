@@ -82,3 +82,28 @@ input{
 	margin: 3px;
 	padding: 4px;
 }
+
+#logs{
+	margin:0;
+	padding:0;
+}
+
+#logs li{
+	margin:					0px;
+	padding:				3px;
+	list-style-position:	inside;
+	list-style-type: 		none;
+	background-color: 		#CCCCCC;
+	border-bottom-style:	solid;
+	border-color: 			#999999;
+	border-width: 			1px;
+}
+
+#logs li:nth-child(1){
+	border-top-style: solid;
+}
+
+#logs li:nth-child(odd){
+	background-color: #E6E6E6;
+}
+

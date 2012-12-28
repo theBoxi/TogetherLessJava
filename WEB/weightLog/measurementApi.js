@@ -1,5 +1,5 @@
 function MeasurementAPI(){
-	this.host = "http://localhost:8080";
+	this.host = "http://<tgl:property name="tgl.host"/>:<tgl:property name="tgl.port"/>";
 	
 	this.logWeight = function(grams, date){
 		var result = $.ajax({

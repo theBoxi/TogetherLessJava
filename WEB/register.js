@@ -1,5 +1,5 @@
 function RegisterAPI(){
-	this.host = "http://localhost:8080";
+	this.host = "http://<tgl:property name="tgl.host"/>:<tgl:property name="tgl.port"/>";
 	this.retValue = "";
 	
 	this.register = function(firstName, lastName, userName, password, password2, email){

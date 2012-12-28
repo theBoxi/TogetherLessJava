@@ -2,7 +2,7 @@
 		<script type="text/javascript">
 			function makeCall(){
 				$.ajax({
-				    url: 'http://localhost:8080/rest/user/login',
+				    url: 'http://<tgl:property name="tgl.host"/>:<tgl:property name="tgl.port"/>/rest/user/login',
 				    type: 'get',
 				    data: $('#registerForm').serializeArray(), // or 'ID=1&Name=John&Age=10'
 				    success: function(data) { 
