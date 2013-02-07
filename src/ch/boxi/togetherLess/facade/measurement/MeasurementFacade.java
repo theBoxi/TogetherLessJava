@@ -37,6 +37,16 @@ public class MeasurementFacade {
 		new MeasurementManager().logWeight(grams, recordingDate, user);
 	}
 	
+	@GET
+	@Path("delete")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public void delete(@CookieParam("sessionID") String sessionID, @QueryParam("id") String id){
+		UserManager userManager = new UserManager();
+		CookieLogin cookieLogin = new CookieLogin(sessionID, null);
+		userManager.loadUser(cookieLogin);
+		new MeasurementManager().deleteWeightLog(cookieLogin, Integer.parseInt(id));
+	}
+	
 	
 	@GET
 	@Path("actualMonth")

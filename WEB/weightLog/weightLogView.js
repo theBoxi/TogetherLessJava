@@ -29,7 +29,7 @@ function WeightLogView(model, listElement, weightInputField, addButton){
 		var logs = this._model.getLogs();
 		for(i in logs){
 			if(logs[i].hasOwnProperty("grams")){
-				this._listElement.append($("<li>" + logs[i].grams/1000 + ", " + logs[i].recordingDate + "</li>"));
+				this._listElement.append($("<li><a href=\"/resource/weightLogEntry/weightLogEntry.html?ID=" + logs[i].ID + "&gramms=" + logs[i].grams + "&recordingDate=" + logs[i].recordingDate + "\">" + logs[i].grams/1000 + ", " + logs[i].recordingDate + "</a></li>"));
 			}
 		}
 		this._model.setSelectedIndex(-1);

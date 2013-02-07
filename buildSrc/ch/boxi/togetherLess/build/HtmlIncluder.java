@@ -101,6 +101,9 @@ public class HtmlIncluder {
 	static boolean isFileToConvert(File file){
 		String fileName = file.toString();
 		String fileNameEnd = fileName.substring(fileName.lastIndexOf(".")+1);
+		if(fileName.endsWith("jquery-1.7.2.min.js")){
+			return false;
+		}
 		return fileEndingsToConvert.contains(fileNameEnd);
 	}
 	

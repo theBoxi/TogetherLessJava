@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import ch.boxi.togetherLess.dataAccess.DaoLocator;
 import ch.boxi.togetherLess.dataAccess.user.dto.Login;
 import ch.boxi.togetherLess.dataAccess.user.dto.User;
+import ch.boxi.togetherLess.dataAccess.weightMeasurement.dao.MeasurementDao;
 import ch.boxi.togetherLess.dataAccess.weightMeasurement.dto.Measurement;
 import ch.boxi.togetherLess.exception.LanguageDependentText;
 import ch.boxi.togetherLess.exception.TogetherLessException;
@@ -36,6 +37,16 @@ public class MeasurementManager {
 //		}
 		SortedSet<Measurement> measurements = DaoLocator.getMeasurementDAO().readMeasurements(from, to, forUser);
 		return measurements;
+	}
+	
+	public void deleteWeightLog(Login login, int id){
+		 MeasurementDao dao = DaoLocator.getMeasurementDAO();
+		 User user = dao.getUserForWeightLog(id);
+		 if(user.getId().equals(login.getUser().getId())){
+			 dao.deleteWeightLog(id);
+		 } else{
+			 throw new NotAuthorizedException();
+		 }
 	}
 	
 	

@@ -9,4 +9,6 @@ import ch.boxi.togetherLess.dataAccess.user.dto.User;
 public interface MeasurementDao {
 	public Measurement createMeasurement(int grams, Date date, User user);
 	public SortedSet<Measurement> readMeasurements(Date from, Date to, User dataFromUser);
+	public void deleteWeightLog(int id);
+	public User getUserForWeightLog(int weightLogID);
 }

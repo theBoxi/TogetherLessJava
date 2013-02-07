@@ -101,6 +101,7 @@ public class UserManager {
 	public User loadUser(CookieLogin login){
 		UserDAO userDAO = DaoLocator.getUserDAO();
 		User user = userDAO.login(login.getSessionID());
+		login.setUser(user);
 		return user;
 	}
 	

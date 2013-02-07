@@ -41,4 +41,21 @@ public class MeasurementDaoJpa extends AbstractHibernateDAO implements Measureme
 		return retMeasurements;
 	}
 
+	@Override
+	public void deleteWeightLog(int id) {
+		Session session = takeTransaction();  
+		String hql = "delete from Measurement where id= :id"; 
+		session.createQuery(hql).setInteger("id", id).executeUpdate();
+		session.getTransaction().commit();
+	}
+
+	@Override
+	public User getUserForWeightLog(int weightLogID) {
+		Session session = takeTransaction();
+		Query query = session.createQuery("select u from User u, Measurement m where u.id = m.user.id and m.id = :id");
+		query.setInteger("id", weightLogID);
+		User user = (User) query.uniqueResult();
+		return user;
+	}
+
 }

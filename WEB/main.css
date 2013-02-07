@@ -107,3 +107,9 @@ input{
 	background-color: #E6E6E6;
 }
 
+.elementList li a{
+ 	color: 	black;
+	display: block;
+	text-decoration: none;
+}
+

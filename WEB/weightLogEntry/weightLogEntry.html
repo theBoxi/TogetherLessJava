@@ -1,0 +1,21 @@
+<tgl:include file="../include/headerApp.html"/>
+<script type="text/javascript" src="/resource/weightLog/measurementApi.js"></script>
+<script type="text/javascript" src="/resource/weightLogEntry/weightLogEntryModel.js"></script>
+<script type="text/javascript" src="/resource/weightLogEntry/weightLogEntryView.js"></script>
+<script type="text/javascript" src="/resource/weightLogEntry/weightLogEntryController.js"></script>
+<script type="text/javascript" src="/resource/eventHandler.js"></script>
+<script type="text/javascript">
+	
+	$(document).ready(function() {
+		setTitle("Gewicht");
+		var model = new WeightLogEntryModel();
+		var view = new WeightLogEntryView(model, $("#ID"), $("#gramms"), $("#recordingDate"), $("#cancelButton"), $("#deleteButton"), $("#saveButton"));
+		var controller = new WeightLogEntryController(model, view);
+		controller.init();
+	});
+</script>
+<input type="hidden" name="ID"/>
+<label for="gramms">Gewicht</label><input type="number" id="gramms" name="gramms"/><br/>
+<label for="recordingDate">Datum</label><input type="datetime" id="recordingDate" name="recordingDate"/><br/>
+<input type="button" id="cancelButton" value="Abbrechen"/><input type="button" id="deleteButton" value="Löschen"/><input type="button" id="saveButton" value="Speichern"/>
+<tgl:include file="../include/footer.html"/>
