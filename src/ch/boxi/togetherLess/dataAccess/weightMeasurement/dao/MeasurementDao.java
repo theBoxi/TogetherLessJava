@@ -11,4 +11,5 @@ public interface MeasurementDao {
 	public SortedSet<Measurement> readMeasurements(Date from, Date to, User dataFromUser);
 	public void deleteWeightLog(int id);
 	public User getUserForWeightLog(int weightLogID);
+	public void updateWeightLog(int id, int grams, Date recordingDate);
 }

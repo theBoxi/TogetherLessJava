@@ -40,11 +40,29 @@ public class MeasurementFacade {
 	@GET
 	@Path("delete")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public void delete(@CookieParam("sessionID") String sessionID, @QueryParam("id") String id){
+	public void delete(@CookieParam("sessionID") String sessionID, @QueryParam("id") Integer id){
 		UserManager userManager = new UserManager();
 		CookieLogin cookieLogin = new CookieLogin(sessionID, null);
 		userManager.loadUser(cookieLogin);
-		new MeasurementManager().deleteWeightLog(cookieLogin, Integer.parseInt(id));
+		new MeasurementManager().deleteWeightLog(cookieLogin, id);
+	}
+	
+	@GET
+	@Path("update")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public void update(
+			@CookieParam("sessionID") String sessionID, 
+			@QueryParam("id") Integer id, 
+			@QueryParam("grams")Integer grams, 
+			@QueryParam("recordingDate") String date){
+		Date recordingDate = new Date();
+		if(StringUtils.isNotEmpty(date)){
+			//noop until Test finished
+		}
+		UserManager userManager = new UserManager();
+		CookieLogin cookieLogin = new CookieLogin(sessionID, null);
+		userManager.loadUser(cookieLogin);
+		new MeasurementManager().updateWeightLog(cookieLogin, id, grams, recordingDate);
 	}
 	
 	

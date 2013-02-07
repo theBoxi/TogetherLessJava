@@ -57,5 +57,16 @@ public class MeasurementDaoJpa extends AbstractHibernateDAO implements Measureme
 		User user = (User) query.uniqueResult();
 		return user;
 	}
+	
+	@Override
+	public void updateWeightLog(int id, int grams, Date recordingDate){
+		Session session = takeTransaction();
+		Query query = session.createQuery("update Measurement set grams = :grams, recordingDate = :recordingDate where id = :id");
+		query.setInteger("grams", grams);
+		query.setDate("recordingDate", recordingDate);
+		query.setInteger("id", id);
+		query.executeUpdate();
+		session.getTransaction().commit();
+	}
 
 }

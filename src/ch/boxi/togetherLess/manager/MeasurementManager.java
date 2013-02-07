@@ -49,5 +49,13 @@ public class MeasurementManager {
 		 }
 	}
 	
-	
+	public void updateWeightLog(Login login, int id, int grams, Date recordingDate){
+		MeasurementDao dao = DaoLocator.getMeasurementDAO();
+		 User user = dao.getUserForWeightLog(id);
+		 if(user.getId().equals(login.getUser().getId())){
+			 dao.updateWeightLog(id, grams, recordingDate);
+		 } else{
+			 throw new NotAuthorizedException();
+		 }
+	}
 }
