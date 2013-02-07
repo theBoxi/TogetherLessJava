@@ -29,11 +29,14 @@ public class HtmlIncluder {
 	private static Set<File> convertedFiles = new HashSet<>();
 	private static Properties properties = new Properties();
 	private static Set<String> fileEndingsToConvert = new HashSet<>();
+	private static Set<String> fileEndingsBlackList = new HashSet<>();
 	
 	static{
 		fileEndingsToConvert.add("html");
 		fileEndingsToConvert.add("htm");
 		fileEndingsToConvert.add("js");
+		
+		fileEndingsBlackList.add("jquery-1.7.2.min.js");
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException {
@@ -101,8 +104,10 @@ public class HtmlIncluder {
 	static boolean isFileToConvert(File file){
 		String fileName = file.toString();
 		String fileNameEnd = fileName.substring(fileName.lastIndexOf(".")+1);
-		if(fileName.endsWith("jquery-1.7.2.min.js")){
-			return false;
+		for(String blackListEntry: fileEndingsBlackList){
+			if(fileName.endsWith(blackListEntry)){
+				return false;
+			}
 		}
 		return fileEndingsToConvert.contains(fileNameEnd);
 	}
