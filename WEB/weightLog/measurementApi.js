@@ -31,6 +31,21 @@ function MeasurementAPI(){
 		}
 	}
 	
+	this.updateWeight = function(id, grams, recordingDate){
+		var result = $.ajax({
+		    url: this.host + '/rest/measurement/update',
+		    type: 'get',
+		    async: false,
+		    data: "id=" + id + "&grams=" + grams + "&recordingDate=" + recordingDate
+		});
+		
+		if(199 < result.status && result.status < 300){
+			return true;
+		} else{
+			alert('PUT failed\nStatusText:\t ' + result.statusText + '\nresponse:\t ' + result.responseText);
+		}
+	}
+	
 	this.getLogs = function(month){
 		var result = $.ajax({
 		    url: this.host + '/rest/measurement/actualMonth',

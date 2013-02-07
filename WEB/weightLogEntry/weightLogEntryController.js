@@ -16,6 +16,16 @@ function WeightLogEntryController(model, view){
 		}
 	});
 	
+	this._view.saveButtonClickedEvent.attach(function(sender){
+		grams = _this._view._weightInputField.attr("value") * 1000;
+		recordingDate = _this._view._dateInputField.attr("value");
+		var api = new MeasurementAPI();
+		ok = api.updateWeight(_this._model.getID(), grams, recordingDate);
+		if(ok){
+			window.history.back();
+		}
+	});
+	
 	this.init = function(){
 		this._model.setID($.getURLParam("ID"));
 		this._model.setGramms($.getURLParam("gramms"));
